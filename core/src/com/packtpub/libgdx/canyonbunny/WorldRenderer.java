@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
+import com.packtpub.libgdx.canyonbunny.utils.Logs;
 
 /**
  * Created by user on 3/22/18.
@@ -23,17 +24,32 @@ public class WorldRenderer implements Disposable {
     }
 
     public void render(){
-        renderTestObject();
-    }
-
-    private void renderTestObject() {
         worldController.cameraHelper.applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+
+        //renderTestObject();
+        //renderRabit();
+        worldController.rock.render(batch);
+
+        batch.end();
+    }
+
+    private void renderRabit() {
+        if(worldController.mFeather != null){
+            worldController.mFeather.draw(batch);
+        }else{
+            Logs.e(TAG,"mFeather is null!!!");
+        }
+    }
+
+    private void renderTestObject() {
+
+
         for(Sprite sprite:worldController.testSprites){
             sprite.draw(batch);
         }
-        batch.end();
+
     }
 
     public void resize(int width, int height){

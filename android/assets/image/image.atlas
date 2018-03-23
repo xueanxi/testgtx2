@@ -1,0 +1,82 @@
+image.png
+size: 1002, 534
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bunny_head
+  rotate: true
+  xy: 1, 385
+  size: 122, 81
+  orig: 122, 82
+  offset: 0, 0
+  index: -1
+cloud01
+  rotate: false
+  xy: 822, 448
+  size: 178, 78
+  orig: 178, 78
+  offset: 0, 0
+  index: -1
+cloud02
+  rotate: false
+  xy: 84, 385
+  size: 197, 88
+  orig: 198, 88
+  offset: 1, 0
+  index: -1
+cloud03
+  rotate: false
+  xy: 638, 448
+  size: 182, 85
+  orig: 182, 85
+  offset: 0, 0
+  index: -1
+item_feather
+  rotate: true
+  xy: 142, 475
+  size: 46, 39
+  orig: 46, 40
+  offset: 0, 0
+  index: -1
+item_gold_coin
+  rotate: false
+  xy: 84, 475
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
+mountain_left
+  rotate: false
+  xy: 1, 1
+  size: 1000, 197
+  orig: 1000, 225
+  offset: 0, 0
+  index: -1
+mountain_right
+  rotate: false
+  xy: 1, 200
+  size: 1000, 183
+  orig: 1000, 225
+  offset: 0, 0
+  index: -1
+rock_edge
+  rotate: true
+  xy: 638, 385
+  size: 61, 348
+  orig: 63, 356
+  offset: 2, 0
+  index: -1
+rock_middle
+  rotate: true
+  xy: 283, 385
+  size: 86, 353
+  orig: 86, 356
+  offset: 0, 0
+  index: -1
+water_overlay
+  rotate: true
+  xy: 183, 475
+  size: 32, 160
+  orig: 32, 160
+  offset: 0, 0
+  index: -1

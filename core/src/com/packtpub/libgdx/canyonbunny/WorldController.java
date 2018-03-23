@@ -7,7 +7,14 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.packtpub.libgdx.canyonbunny.modle.Rock;
+import com.packtpub.libgdx.canyonbunny.utils.Assets;
+import com.packtpub.libgdx.canyonbunny.utils.Constants;
 import com.packtpub.libgdx.canyonbunny.utils.Logs;
 
 /**
@@ -19,17 +26,100 @@ public class WorldController extends InputAdapter {
     public Sprite[] testSprites;
     public int selectedSprite = 0;
     public CameraHelper cameraHelper;
+    public Assets mAssets;
+
+    public Sprite mFeather;
+    public Rock rock;
+
 
 
     public WorldController(){
         init();
-
     }
     public void init(){
         Gdx.input.setInputProcessor(this);
+        mAssets = Assets.getInstance();
         cameraHelper = new CameraHelper();
-        initTestObject();
+        initRock();
+        //initImgObject();
+        //initTestObject();
+        //initFeather();
 
+    }
+
+    private void initFeather() {
+        TextureAtlas.AtlasRegion rabitTexture = mAssets.findTextureByName(Constants.AtlasNames.ITEM_FEATHER);
+        if(rabitTexture!= null){
+            mFeather = new Sprite(rabitTexture);
+            mFeather.setSize(1,1);
+            Logs.d(TAG,"FEATHER width = "+ mFeather.getWidth());
+            Logs.d(TAG,"FEATHER heigh = "+ mFeather.getHeight());
+
+        }else{
+            Logs.e(TAG,"rabitTexture = null");
+        }
+    }
+
+    private void initRock() {
+        testSprites = new Sprite[1];
+        int width = 32;
+        int height = 32;
+        Array<TextureRegion> textureArray = new Array<TextureRegion>(3);
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.BUNNY_HEAD));
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.MOUNTAIN_LEFT));
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.MOUNTAIN_RIGHT));
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.ROCK_EDGE));
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.ROCK_MIDDLE));
+
+        rock = new Rock();
+        rock.setPosition(new Vector2(0,0));
+        rock.setLength(4);
+
+
+
+        /*for (int i = 0; i < testSprites.length; i++) {
+            Sprite spr = new Sprite(textureArray.get(i));
+            // Define sprite size to be 1m x 1m in game world
+            spr.setSize(1, 1);
+            // Set origin to sprite's center
+            spr.setOrigin(spr.getWidth() / 2.0f, spr.getHeight() / 2.0f);
+            // Calculate random position for sprite
+            float randomX = MathUtils.random(-2.0f, 2.0f);
+            float randomY = MathUtils.random(-2.0f, 2.0f);
+            spr.setPosition(randomX, randomY);
+            // Put new sprite into array
+            testSprites[i] = spr;
+        }*/
+        // Set first sprite as selected one
+        selectedSprite = 0;
+    }
+
+    private void initImgObject() {
+        testSprites = new Sprite[5];
+        int width = 32;
+        int height = 32;
+        Array<TextureRegion> textureArray = new Array<TextureRegion>(3);
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.BUNNY_HEAD));
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.MOUNTAIN_LEFT));
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.MOUNTAIN_RIGHT));
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.ROCK_EDGE));
+        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.ROCK_MIDDLE));
+
+        for (int i = 0; i < testSprites.length; i++) {
+            Sprite spr = new Sprite(textureArray.get(i));
+            // Define sprite size to be 1m x 1m in game world
+            spr.setSize(1, 1);
+            // Set origin to sprite's center
+            spr.setOrigin(spr.getWidth() / 2.0f, spr.getHeight() / 2.0f);
+            // Calculate random position for sprite
+            float randomX = MathUtils.random(-2.0f, 2.0f);
+            float randomY = MathUtils.random(-2.0f, 2.0f);
+            spr.setPosition(randomX, randomY);
+            // Put new sprite into array
+            testSprites[i] = spr;
+        }
+        // Set first sprite as selected one
+        selectedSprite = 0;
     }
 
     private void initTestObject() {
@@ -87,7 +177,7 @@ public class WorldController extends InputAdapter {
     }
 
     public void update(float deltaTime){
-        updateTestObjects(deltaTime);
+        //updateTestObjects(deltaTime);
         handleDebugInput(deltaTime);
         cameraHelper.update(deltaTime);
     }
