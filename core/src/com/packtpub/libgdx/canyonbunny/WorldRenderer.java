@@ -3,7 +3,9 @@ package com.packtpub.libgdx.canyonbunny;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
+import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
 import com.packtpub.libgdx.canyonbunny.utils.Logs;
 
@@ -18,9 +20,13 @@ public class WorldRenderer implements Disposable {
     SpriteBatch batch;
     WorldController worldController;
 
+
     public WorldRenderer(WorldController worldController){
         this.worldController = worldController;
         init();
+
+
+
     }
 
     public void render(){
@@ -30,7 +36,17 @@ public class WorldRenderer implements Disposable {
 
         //renderTestObject();
         //renderRabit();
-        worldController.rock.render(batch);
+
+        //batch.draw(worldController.rabit,1,1,0,0,2,2,1,1,180);
+        //batch.draw(worldController.rabit,0,0,0,0,2,2,1,1,0);
+        //batch.draw(worldController.rabit,0,0,0,0,2,2,1,1,180);
+        //batch.draw(worldController.rabit,0,0,0,0,2,2,1,1,180);
+        //batch.draw(worldController.rabit,0,0,1,1,2,2,1,1,0);
+        //batch.draw(worldController.feather,-2,-2,0,0,2,2,1,1,0);
+
+        //worldController.rock.render(batch);
+        worldController.mountains.render(batch);
+
 
         batch.end();
     }

@@ -7,7 +7,7 @@ package com.packtpub.libgdx.canyonbunny.utils;
 public class Constants {
     public static final float VIEWPORT_WIDTH = 5;
     public static final float VIEWPORT_HEIGHT = 5;
-    public static final String TEXTURE_ATLAS_OBJECTS = "image/image.atlas";
+    public static final String TEXTURE_ATLAS_OBJECTS = "image/game.atlas";
 
     /**
      * 纹理图集的小图名称常量

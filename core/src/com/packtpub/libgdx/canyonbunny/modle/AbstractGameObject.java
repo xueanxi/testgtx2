@@ -71,4 +71,15 @@ public abstract class AbstractGameObject {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
+
+    @Override
+    public String toString() {
+        return " {" +
+                "position=" + position +
+                ", dimension=" + dimension +
+                ", origin=" + origin +
+                ", scale=" + scale +
+                ", rotation=" + rotation +
+                '}';
+    }
 }

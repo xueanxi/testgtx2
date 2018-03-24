@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.packtpub.libgdx.canyonbunny.modle.Mountains;
 import com.packtpub.libgdx.canyonbunny.modle.Rock;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
@@ -30,6 +31,10 @@ public class WorldController extends InputAdapter {
 
     public Sprite mFeather;
     public Rock rock;
+    public Mountains mountains;
+
+    TextureRegion rabit;
+    TextureRegion feather;
 
 
 
@@ -41,10 +46,13 @@ public class WorldController extends InputAdapter {
         mAssets = Assets.getInstance();
         cameraHelper = new CameraHelper();
         initRock();
+        initMountain();
+
+        //rabit = Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
+        //feather = Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_FEATHER);
         //initImgObject();
         //initTestObject();
         //initFeather();
-
     }
 
     private void initFeather() {
@@ -61,37 +69,15 @@ public class WorldController extends InputAdapter {
     }
 
     private void initRock() {
-        testSprites = new Sprite[1];
-        int width = 32;
-        int height = 32;
-        Array<TextureRegion> textureArray = new Array<TextureRegion>(3);
-        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.BUNNY_HEAD));
-        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.MOUNTAIN_LEFT));
-        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.MOUNTAIN_RIGHT));
-        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.ROCK_EDGE));
-        textureArray.add(mAssets.findTextureByName(Constants.AtlasNames.ROCK_MIDDLE));
-
         rock = new Rock();
-        rock.setPosition(new Vector2(0,0));
+        rock.setPosition(new Vector2(-2,0));
+        rock.showData("1");
         rock.setLength(4);
+        rock.showData("2");
+    }
 
-
-
-        /*for (int i = 0; i < testSprites.length; i++) {
-            Sprite spr = new Sprite(textureArray.get(i));
-            // Define sprite size to be 1m x 1m in game world
-            spr.setSize(1, 1);
-            // Set origin to sprite's center
-            spr.setOrigin(spr.getWidth() / 2.0f, spr.getHeight() / 2.0f);
-            // Calculate random position for sprite
-            float randomX = MathUtils.random(-2.0f, 2.0f);
-            float randomY = MathUtils.random(-2.0f, 2.0f);
-            spr.setPosition(randomX, randomY);
-            // Put new sprite into array
-            testSprites[i] = spr;
-        }*/
-        // Set first sprite as selected one
-        selectedSprite = 0;
+    private void initMountain(){
+        mountains = new Mountains(2);
     }
 
     private void initImgObject() {
@@ -176,6 +162,23 @@ public class WorldController extends InputAdapter {
         testSprites[selectedSprite].setRotation(rotation);
     }
 
+    private void rotationObject(float deltaTime,Sprite sprite,boolean isClock) {
+        // Get current rotation from selected sprite
+        float rotation = testSprites[selectedSprite].getRotation();
+        // Rotate sprite by 90 degrees per second
+        if(isClock){
+            rotation += 90 * deltaTime;
+        }else{
+            rotation -= 90 * deltaTime;
+        }
+
+        //Logs.d(TAG,"deltaTime = "+deltaTime+" rotation="+rotation);
+        // Wrap around at 360 degrees
+        rotation %= 360;
+        // Set new rotation value to selected sprite
+        sprite.setRotation(rotation);
+    }
+
     public void update(float deltaTime){
         //updateTestObjects(deltaTime);
         handleDebugInput(deltaTime);
@@ -237,6 +240,8 @@ public class WorldController extends InputAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.C)){
             cameraHelper.setZoom(1);
         }
+
+        // 旋转精灵
     }
 
     private void moveCamera(float moveX,float moveY){
@@ -248,6 +253,7 @@ public class WorldController extends InputAdapter {
     }
 
     private void moveSelectedSprite(float x,float y){
+        if(testSprites.length == 0) return;
         testSprites[selectedSprite].translate(x,y);
     }
 
