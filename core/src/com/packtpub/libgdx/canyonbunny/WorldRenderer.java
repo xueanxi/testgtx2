@@ -45,8 +45,10 @@ public class WorldRenderer implements Disposable {
         //batch.draw(worldController.feather,-2,-2,0,0,2,2,1,1,0);
 
         //worldController.rock.render(batch);
-        worldController.mountains.render(batch);
-
+        //worldController.mountains.render(batch);
+       // worldController.water.render(batch);
+       // worldController.clouds.render(batch);
+        worldController.level.render(batch);
 
         batch.end();
     }

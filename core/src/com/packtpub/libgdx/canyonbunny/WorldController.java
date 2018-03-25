@@ -12,8 +12,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.packtpub.libgdx.canyonbunny.Level.Level;
+import com.packtpub.libgdx.canyonbunny.modle.Clouds;
 import com.packtpub.libgdx.canyonbunny.modle.Mountains;
 import com.packtpub.libgdx.canyonbunny.modle.Rock;
+import com.packtpub.libgdx.canyonbunny.modle.Water;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
 import com.packtpub.libgdx.canyonbunny.utils.Logs;
@@ -32,6 +35,9 @@ public class WorldController extends InputAdapter {
     public Sprite mFeather;
     public Rock rock;
     public Mountains mountains;
+    public Water water;
+    public Clouds clouds;
+    public Level level;
 
     TextureRegion rabit;
     TextureRegion feather;
@@ -47,12 +53,27 @@ public class WorldController extends InputAdapter {
         cameraHelper = new CameraHelper();
         initRock();
         initMountain();
+        initWater();
+        initClouds();
+        initLevel();
 
         //rabit = Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
         //feather = Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_FEATHER);
         //initImgObject();
         //initTestObject();
         //initFeather();
+    }
+
+    private void initLevel() {
+        level = new Level(Constants.Level.LEVEL_01);
+    }
+
+    private void initClouds() {
+        clouds = new Clouds(100,5);
+    }
+
+    private void initWater() {
+        water = new Water(1f);
     }
 
     private void initFeather() {

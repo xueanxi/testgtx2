@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class CanyonBunnyMain extends ApplicationAdapter {
-	//http://www.cnblogs.com/mignet/p/Learning_Libgdx_Game_Development_01.html
+	// http://www.cnblogs.com/mignet/p/Learning_Libgdx_Game_Development_01.html
 	WorldController worldController;
 	WorldRenderer worldRenderer;
 

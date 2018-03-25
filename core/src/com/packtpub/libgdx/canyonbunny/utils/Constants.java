@@ -26,5 +26,9 @@ public class Constants {
         public static final String WATER_OVERLAY = "water_overlay";
     }
 
+    public static interface Level{
+        public static final String LEVEL_01 = "level/level-01.png";
+    }
+
 
 }
