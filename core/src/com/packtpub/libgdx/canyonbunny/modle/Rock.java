@@ -15,6 +15,8 @@ public class Rock extends AbstractGameObject {
     private static final String TAG = "=Rock";
     TextureRegion regEdge;
     TextureRegion regMiddle;
+    float edgeWidth = 0.25f;
+    float middleWidth = 1f;
     int length;
 
     public Rock(){
@@ -22,14 +24,14 @@ public class Rock extends AbstractGameObject {
     }
 
     private void init() {
-        dimension.set(1,2f);
+        dimension.set(middleWidth,2f);
         rotation = 0;
         regEdge = Assets.getInstance().findTextureByName(Constants.AtlasNames.ROCK_EDGE);
         Texture t= regEdge.getTexture();
-        Logs.d(TAG,"regEdge reg.getRegionX()="+regEdge.getRegionX());
-        Logs.d(TAG,"regEdge reg.getRegionY()="+regEdge.getRegionY());
-        Logs.d(TAG,"regEdge reg.getRegionWidth()="+regEdge.getRegionWidth());
-        Logs.d(TAG,"regEdge reg.getRegionHeight()="+regEdge.getRegionHeight());
+        //Logs.d(TAG,"regEdge reg.getRegionX()="+regEdge.getRegionX());
+        //Logs.d(TAG,"regEdge reg.getRegionY()="+regEdge.getRegionY());
+        //Logs.d(TAG,"regEdge reg.getRegionWidth()="+regEdge.getRegionWidth());
+        //Logs.d(TAG,"regEdge reg.getRegionHeight()="+regEdge.getRegionHeight());
         regMiddle = Assets.getInstance().findTextureByName(Constants.AtlasNames.ROCK_MIDDLE);
         length = 1;
 
@@ -37,6 +39,15 @@ public class Rock extends AbstractGameObject {
 
     public void setLength(int length) {
         this.length = length;
+        float total = 0;
+        if(length ==1){
+            total = 1;
+        }else if(length == 2){
+            total = 1.25f;
+        }else{
+            total = length-2 + 0.5f;
+        }
+        this.bounds.set(0,0,total,dimension.y);
     }
 
     public void addLength(int amount){
@@ -86,6 +97,6 @@ public class Rock extends AbstractGameObject {
 
 
     public void showData(String tag){
-        Logs.d(TAG,tag+" rock = "+this.toString());
+        //Logs.d(TAG,tag+" rock = "+this.toString());
     }
 }

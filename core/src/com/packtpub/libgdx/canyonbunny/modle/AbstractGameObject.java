@@ -1,6 +1,8 @@
 package com.packtpub.libgdx.canyonbunny.modle;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -8,11 +10,18 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public abstract class AbstractGameObject {
-    protected Vector2 position;
-    protected Vector2 dimension;
-    protected Vector2 origin;
-    protected Vector2 scale;
-    protected float rotation;
+    public Vector2 position;
+    public Vector2 dimension;
+    public Vector2 origin;
+    public Vector2 scale;
+    public float rotation;
+
+    //物理特性
+    public Vector2 velocity;
+    public Vector2 terminalVelocity;
+    public Vector2 friction;
+    public Vector2 acceleration;
+    public Rectangle bounds;
 
     public AbstractGameObject(){
         position = new Vector2();
@@ -20,10 +29,18 @@ public abstract class AbstractGameObject {
         origin = new Vector2();
         scale = new Vector2(1,1);
         rotation = 0f;
+        bounds =new Rectangle(0,0,0,0);
+        terminalVelocity = new Vector2(0,0);
+        friction = new Vector2(0,0);
+        velocity = new Vector2(0,0);
+        acceleration = new Vector2(0,0);
     }
 
     public void update(float deltaTime){
-
+        updateMotionX(deltaTime);
+        updateMotionY(deltaTime);
+        position.x += velocity.x * deltaTime;
+        position.y += velocity.y * deltaTime;
     }
 
     /**
@@ -70,6 +87,39 @@ public abstract class AbstractGameObject {
 
     public void setRotation(float rotation) {
         this.rotation = rotation;
+    }
+
+    protected void updateMotionX(float deltaTime){
+        //处理摩擦力
+        if(this.velocity.x>0){
+            // 如果速度是正方向的，摩擦力会使正方向的速度变小
+            velocity.x = Math.max(velocity.x - friction.x * deltaTime,0);
+        }else{
+            // 如果速度是负方向的，摩擦力会使负方向的速度变小
+            velocity.x = Math.min(velocity.x + friction.x * deltaTime, 0);
+        }
+
+        //处理加速度
+        velocity.x += acceleration.x * deltaTime;
+        //加速之后的速度，不能超出极限速度
+        velocity.x = MathUtils.clamp(velocity.x,-terminalVelocity.x,terminalVelocity.x);
+    }
+
+    protected void updateMotionY(float deltaTime){
+        if (velocity.y != 0) {
+            // Apply friction
+            if (velocity.y > 0) {
+                velocity.y = Math.max(velocity.y - friction.y * deltaTime, 0);
+            } else {
+                velocity.y = Math.min(velocity.y + friction.y * deltaTime, 0);
+            }
+        }
+        // Apply acceleration
+        velocity.y += acceleration.y * deltaTime;
+        // Make sure the object's velocity does not exceed the
+        // positive or negative terminal velocity
+        velocity.y = MathUtils.clamp(velocity.y, -terminalVelocity.y,
+                terminalVelocity.y);
     }
 
     @Override

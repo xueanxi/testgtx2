@@ -1,6 +1,8 @@
 package com.packtpub.libgdx.canyonbunny;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,6 +19,7 @@ public class WorldRenderer implements Disposable {
     private static final String TAG = "=WorldRenderer";
 
     OrthographicCamera camera;
+    private OrthographicCamera cameraGUI;
     SpriteBatch batch;
     WorldController worldController;
 
@@ -24,54 +27,43 @@ public class WorldRenderer implements Disposable {
     public WorldRenderer(WorldController worldController){
         this.worldController = worldController;
         init();
-
-
-
     }
 
     public void render(){
-        worldController.cameraHelper.applyTo(camera);
-        batch.setProjectionMatrix(camera.combined);
+        renderWorld(batch);
+        renderGui(batch);
+    }
+    private void renderGui(SpriteBatch batch) {
+        batch.setProjectionMatrix(cameraGUI.combined);
         batch.begin();
-
-        //renderTestObject();
-        //renderRabit();
-
-        //batch.draw(worldController.rabit,1,1,0,0,2,2,1,1,180);
-        //batch.draw(worldController.rabit,0,0,0,0,2,2,1,1,0);
-        //batch.draw(worldController.rabit,0,0,0,0,2,2,1,1,180);
-        //batch.draw(worldController.rabit,0,0,0,0,2,2,1,1,180);
-        //batch.draw(worldController.rabit,0,0,1,1,2,2,1,1,0);
-        //batch.draw(worldController.feather,-2,-2,0,0,2,2,1,1,0);
-
-        //worldController.rock.render(batch);
-        //worldController.mountains.render(batch);
-       // worldController.water.render(batch);
-       // worldController.clouds.render(batch);
-        worldController.level.render(batch);
-
+        // draw collected gold coins icon + text
+        // (anchored to top left edge)
+        renderGuiScore(batch);
+        // draw extra lives icon + text (anchored to top right edge)
+        renderGuiExtraLive(batch);
+        // draw FPS text (anchored to bottom right edge)
+        renderGuiFpsCounter(batch);
         batch.end();
     }
 
-    private void renderRabit() {
-        if(worldController.mFeather != null){
-            worldController.mFeather.draw(batch);
-        }else{
-            Logs.e(TAG,"mFeather is null!!!");
-        }
+    private void renderWorld (SpriteBatch batch) {
+        worldController.cameraHelper.applyTo(camera);
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        worldController.level.render(batch);
+        batch.end();
     }
 
-    private void renderTestObject() {
 
-
-        for(Sprite sprite:worldController.testSprites){
-            sprite.draw(batch);
-        }
-
-    }
 
     public void resize(int width, int height){
+        camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;
+        camera.update();
 
+        cameraGUI.viewportHeight = Constants.VIEWPORT_GUI_HEIGHT;
+        cameraGUI.viewportWidth = (Constants.VIEWPORT_GUI_HEIGHT/ (float)height) * (float)width;
+        cameraGUI.position.set(cameraGUI.viewportWidth / 2,cameraGUI.viewportHeight / 2, 0);
+        cameraGUI.update();
     }
 
     private void init(){
@@ -79,6 +71,64 @@ public class WorldRenderer implements Disposable {
         camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH,Constants.VIEWPORT_HEIGHT);
         camera.position.set(0,0,0);
         camera.update();
+
+        cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
+        cameraGUI.position.set(0, 0, 0);
+        cameraGUI.setToOrtho(false); // flip y-axis
+        cameraGUI.update();
+    }
+
+    private void renderGuiScore(SpriteBatch batch) {
+
+        TextureRegion reg = Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_GOLD_COIN);
+        int width = reg.getRegionWidth();
+        int height = reg.getRegionHeight();
+        float x = 15;
+        float y = cameraGUI.viewportHeight - height -5;
+        batch.draw(reg,
+                x, y,
+                width/2, height/2,
+                width, height,
+                0.6f, 0.6f, 0);
+        Assets.getInstance().getBitmapFont(2).draw(batch,"" + worldController.score, x + width, y + height*0.5f);
+    }
+
+    private void renderGuiExtraLive(SpriteBatch batch) {
+        float x = cameraGUI.viewportWidth  - Constants.LIVES_START * 50;
+        float y = cameraGUI.viewportHeight - 50;
+        TextureRegion reg = Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
+        float width = 40;
+        float height = 40 * reg.getRegionWidth()/reg.getRegionWidth();
+        for (int i = 0; i < Constants.LIVES_START; i++) {
+            if (worldController.lives <= i){
+                batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
+            }
+            batch.draw(reg,
+                    x + i * 50, y,//(x,y)
+                    width/2, height/2,//(orig.x,orig.y)
+                    width,height,//(width,height)
+                    1, 1, 0);
+            batch.setColor(1, 1, 1, 1);
+        }
+    }
+
+    private void renderGuiFpsCounter(SpriteBatch batch) {
+        float x = cameraGUI.viewportWidth - 55;
+        float y =  15;
+        int fps = Gdx.graphics.getFramesPerSecond();
+        BitmapFont fpsFont = Assets.getInstance().getBitmapFont(2);
+        if (fps >= 45) {
+            // 45 or more FPS show up in green
+            fpsFont.setColor(0, 1, 0, 1);
+        } else if (fps >= 30) {
+            // 30 or more FPS show up in yellow
+            fpsFont.setColor(1, 1, 0, 1);
+        } else {
+            // less than 30 FPS show up in red
+            fpsFont.setColor(1, 0, 0, 1);
+        }
+        fpsFont.draw(batch, "FPS: " + fps, x, y);
+        fpsFont.setColor(1, 1, 1, 1); // white
     }
 
     @Override

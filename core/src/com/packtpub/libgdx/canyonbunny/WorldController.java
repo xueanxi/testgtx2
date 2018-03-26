@@ -10,10 +10,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.packtpub.libgdx.canyonbunny.Level.Level;
+import com.packtpub.libgdx.canyonbunny.modle.BuuyHead;
 import com.packtpub.libgdx.canyonbunny.modle.Clouds;
+import com.packtpub.libgdx.canyonbunny.modle.Feather;
+import com.packtpub.libgdx.canyonbunny.modle.GlodCoin;
 import com.packtpub.libgdx.canyonbunny.modle.Mountains;
 import com.packtpub.libgdx.canyonbunny.modle.Rock;
 import com.packtpub.libgdx.canyonbunny.modle.Water;
@@ -32,16 +36,12 @@ public class WorldController extends InputAdapter {
     public CameraHelper cameraHelper;
     public Assets mAssets;
 
-    public Sprite mFeather;
-    public Rock rock;
-    public Mountains mountains;
-    public Water water;
-    public Clouds clouds;
     public Level level;
+    public int score = 0;
+    public int lives = 1;
 
-    TextureRegion rabit;
-    TextureRegion feather;
-
+    private Rectangle r1;
+    private Rectangle r2;
 
 
     public WorldController(){
@@ -50,55 +50,98 @@ public class WorldController extends InputAdapter {
     public void init(){
         Gdx.input.setInputProcessor(this);
         mAssets = Assets.getInstance();
-        cameraHelper = new CameraHelper();
-        initRock();
-        initMountain();
-        initWater();
-        initClouds();
-        initLevel();
 
-        //rabit = Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
-        //feather = Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_FEATHER);
-        //initImgObject();
-        //initTestObject();
-        //initFeather();
-    }
-
-    private void initLevel() {
         level = new Level(Constants.Level.LEVEL_01);
+        cameraHelper = new CameraHelper();
+        cameraHelper.setTarget(level.buuyhead);
     }
 
-    private void initClouds() {
-        clouds = new Clouds(100,5);
+
+    boolean isLog = true;
+    public void testCollistion(){
+        r1 = new Rectangle();
+        r2 = new Rectangle();
+
+        r1.set(level.buuyhead.position.x,level.buuyhead.position.y,
+                level.buuyhead.bounds.width,level.buuyhead.bounds.height);
+
+        Rock rock = null;
+        GlodCoin coin = null;
+        Feather feather = null;
+        for(int i = 0;i<level.rocks.size;i++){
+            rock = level.rocks.get(i);
+            r2.set(rock.position.x,rock.position.y,rock.bounds.width,rock.bounds.height);
+            if(!r1.overlaps(r2)){
+                if(isLog)Logs.d(TAG,"No collision r1:"+r1+"  r2:"+r2);
+                continue;
+            }else{
+                onCollisionBunnyHeadWithRock(rock);
+            }
+        }
+        isLog = false;
+
+        for(int i = 0;i<level.goldcoins.size;i++){
+            coin = level.goldcoins.get(i);
+            r2.set(coin.position.x,coin.position.y,coin.bounds.width,coin.bounds.height);
+            if(!r1.overlaps(r2)){
+                continue;
+            }else{
+                onCollisionBunnyWithGoldCoin(coin);
+            }
+        }
+
+        for(int i = 0;i<level.feathers.size;i++){
+            feather = level.feathers.get(i);
+            r2.set(feather.position.x,feather.position.y,feather.bounds.width,feather.bounds.height);
+            if(!r1.overlaps(r2)){
+                continue;
+            }else{
+                onCollisionBunnyWithFeather(feather);
+            }
+        }
+
     }
 
-    private void initWater() {
-        water = new Water(1f);
-    }
-
-    private void initFeather() {
-        TextureAtlas.AtlasRegion rabitTexture = mAssets.findTextureByName(Constants.AtlasNames.ITEM_FEATHER);
-        if(rabitTexture!= null){
-            mFeather = new Sprite(rabitTexture);
-            mFeather.setSize(1,1);
-            Logs.d(TAG,"FEATHER width = "+ mFeather.getWidth());
-            Logs.d(TAG,"FEATHER heigh = "+ mFeather.getHeight());
-
-        }else{
-            Logs.e(TAG,"rabitTexture = null");
+    private void onCollisionBunnyHeadWithRock(Rock rock) {
+        Logs.d(TAG,"onCollisionBunnyHeadWithRock");
+        BuuyHead bunnyHead = level.buuyhead;
+        float heightDifference = Math.abs(bunnyHead.position.y - (rock.position.y + rock.bounds.height));
+        if (heightDifference > 0.25f) {
+            boolean hitLeftEdge = bunnyHead.position.x > (rock.position.x + rock.bounds.width / 2.0f);
+            if (hitLeftEdge) {
+                bunnyHead.position.x = rock.position.x + rock.bounds.width;
+            } else {
+                bunnyHead.position.x = rock.position.x - bunnyHead.bounds.width;
+            }
+            return;
+        }
+        switch (bunnyHead.jumpState) {
+            case GROUNDED:
+                break;
+            case FALLING:
+            case JUMP_FALLING:
+                bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height
+                        + bunnyHead.origin.y;
+                bunnyHead.jumpState = BuuyHead.JUMP_STATE.GROUNDED;
+                break;
+            case JUMP_RISING:
+                bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height
+                        + bunnyHead.origin.y;
+                break;
         }
     }
 
-    private void initRock() {
-        rock = new Rock();
-        rock.setPosition(new Vector2(-2,0));
-        rock.showData("1");
-        rock.setLength(4);
-        rock.showData("2");
+    private void onCollisionBunnyWithGoldCoin(GlodCoin goldcoin) {
+        goldcoin.setCollect(true);
+        score += goldcoin.getScore();
+        Gdx.app.log(TAG, "Gold coin collected");
     }
 
-    private void initMountain(){
-        mountains = new Mountains(2);
+    private void onCollisionBunnyWithFeather(Feather feather) {
+        feather.setCollect(true);
+        score += feather.getScore();
+        level.buuyhead.setFeatherPowerup(true);
+        Gdx.app.log(TAG, "Feather collected");
     }
 
     private void initImgObject() {
@@ -202,8 +245,32 @@ public class WorldController extends InputAdapter {
 
     public void update(float deltaTime){
         //updateTestObjects(deltaTime);
-        handleDebugInput(deltaTime);
+        handleInputGame(deltaTime);
+        //handleDebugInput(deltaTime);
+        level.update(deltaTime);
+        testCollistion();
         cameraHelper.update(deltaTime);
+    }
+
+    private void handleInputGame(float deltaTime) {
+        //if (cameraHelper.hasTarget(level.buuyhead)) {
+            // Player Movement
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                level.buuyhead.velocity.x = -level.buuyhead.terminalVelocity.x;
+            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                level.buuyhead.velocity.x = level.buuyhead.terminalVelocity.x;
+            } else {
+                // Execute auto-forward movement on non-desktop platform
+                if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
+                    level.buuyhead.velocity.x = level.buuyhead.terminalVelocity.x;
+                }
+            }
+            // Bunny Jump
+            if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE))
+                level.buuyhead.setJumping(true);
+            else
+                level.buuyhead.setJumping(false);
+        //}
     }
 
     private void handleDebugInput(float deltaTime) {
@@ -274,8 +341,8 @@ public class WorldController extends InputAdapter {
     }
 
     private void moveSelectedSprite(float x,float y){
-        if(testSprites.length == 0) return;
-        testSprites[selectedSprite].translate(x,y);
+        if(level.buuyhead == null) return;
+        level.buuyhead.setPosition(new Vector2(x,y));
     }
 
     @Override
@@ -283,16 +350,11 @@ public class WorldController extends InputAdapter {
         if(Input.Keys.R == keycode){
             init();
             Logs.d(TAG,"Game is reset!!!");
-        }else if(Input.Keys.SPACE == keycode){
-            selectedSprite = (selectedSprite+1)%testSprites.length;
-
-            if(cameraHelper.hasTarget()){
-                cameraHelper.setTarget(testSprites[selectedSprite]);
-            }
-            Logs.d(TAG,"sprite selected:"+selectedSprite);
-        }else if(Input.Keys.ENTER == keycode){
+        }else if (keycode == Input.Keys.ENTER) {
             cameraHelper.setTarget(cameraHelper.hasTarget() ? null
-                    : testSprites[selectedSprite]);
+                    : level.buuyhead);
+            Gdx.app.debug(TAG,
+                    "Camera follow enabled: " + cameraHelper.hasTarget());
         }
         return false;
     }

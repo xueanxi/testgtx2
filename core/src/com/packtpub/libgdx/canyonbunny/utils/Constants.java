@@ -8,6 +8,15 @@ public class Constants {
     public static final float VIEWPORT_WIDTH = 5;
     public static final float VIEWPORT_HEIGHT = 5;
     public static final String TEXTURE_ATLAS_OBJECTS = "image/game.atlas";
+    public static final String FONT_FILE = "font/arial-15.fnt";
+    // GUI Width
+    public static final float VIEWPORT_GUI_WIDTH = 800.0f;
+    // GUI Height
+    public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
+    // Amount of extra lives at level start
+    public static final int LIVES_START = 3;
+
+    public static final int ITEM_FEATHER_POWERUP_DURATION = 3;
 
     /**
      * 纹理图集的小图名称常量

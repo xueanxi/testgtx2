@@ -1,8 +1,11 @@
 package com.packtpub.libgdx.canyonbunny.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -21,6 +24,9 @@ public class Assets implements Disposable {
     private HashMap<String,AtlasRegion> mTextureMap = new HashMap<String,AtlasRegion>();
     private HashMap<String,Sprite> mSpriteMap = new HashMap<String,Sprite>();
     private static TextureAtlas mTextureAtlas;
+    private static BitmapFont bigFont;
+    private static BitmapFont midleFont;
+    private static BitmapFont smallFont;
     private static boolean hasInit = false;
 
     private Assets(){
@@ -45,6 +51,23 @@ public class Assets implements Disposable {
         mAssetManager.finishLoading();
 
         mTextureAtlas = mAssetManager.get(Constants.TEXTURE_ATLAS_OBJECTS,TextureAtlas.class);
+
+
+        initFont();
+    }
+
+    private static void initFont() {
+        bigFont = new BitmapFont();
+        bigFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        bigFont.getData().setScale(2f);
+
+        midleFont = new BitmapFont();
+        midleFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        midleFont.getData().setScale(1f);
+
+        smallFont = new BitmapFont();
+        smallFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        smallFont.getData().setScale(0.5f);
     }
 
     public AtlasRegion findTextureByName(String name){
@@ -60,18 +83,15 @@ public class Assets implements Disposable {
         return result;
     }
 
-    /*public Sprite findSpriteByName(String name){
-        Sprite result = null;
-        if(mSpriteMap.containsKey(name)){
-            result = mSpriteMap.get(name);
+    public BitmapFont getBitmapFont(int size){
+        if(size == 3){
+            return bigFont;
+        }else if(size ==1){
+            return smallFont;
         }else{
-            result = mTextureAtlas.createSprite(name);
-            if(result != null){
-                mSpriteMap.put(name,result);
-            }
+            return midleFont;
         }
-        return result;
-    }*/
+    }
 
     static class MyAssetErrorListener implements AssetErrorListener {
 
@@ -86,8 +106,7 @@ public class Assets implements Disposable {
         this.mTextureAtlas.dispose();
         this.mTextureMap.clear();
         this.mAssetManager.dispose();
+        //this.bitmapFont.dispose();
         hasInit = false;
     }
-
-
 }
