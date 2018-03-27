@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
@@ -43,6 +44,8 @@ public class WorldRenderer implements Disposable {
         renderGuiExtraLive(batch);
         // draw FPS text (anchored to bottom right edge)
         renderGuiFpsCounter(batch);
+
+        renderGuiGameOverMessage(batch);
         batch.end();
     }
 
@@ -109,6 +112,17 @@ public class WorldRenderer implements Disposable {
                     width,height,//(width,height)
                     1, 1, 0);
             batch.setColor(1, 1, 1, 1);
+        }
+    }
+
+    private void renderGuiGameOverMessage(SpriteBatch batch) {
+        if (worldController.isGameOver()) {
+            float x = cameraGUI.viewportWidth / 2;
+            float y = cameraGUI.viewportHeight / 2;
+            BitmapFont fontGameOver = Assets.getInstance().getBitmapFont(3);
+            fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+            fontGameOver.draw(batch, "GAME OVER", x, y,100, Align.center,true);
+            fontGameOver.setColor(1, 1, 1, 1);
         }
     }
 

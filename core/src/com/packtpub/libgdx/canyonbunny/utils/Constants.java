@@ -17,6 +17,7 @@ public class Constants {
     public static final int LIVES_START = 3;
 
     public static final int ITEM_FEATHER_POWERUP_DURATION = 3;
+    public static final float TIME_DELAY_GAME_OVER = 3;// 挂掉之后等待的时间
 
     /**
      * 纹理图集的小图名称常量

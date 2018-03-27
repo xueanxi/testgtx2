@@ -40,12 +40,10 @@ public class BuuyHead extends AbstractGameObject {
         regHead = Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
         // Center image on game object
         origin.set(dimension.x / 2, dimension.y / 2);
-        // Bounding box for collision detection
-        bounds.set(0, 0, dimension.x, dimension.y);
         // Set physics values
         terminalVelocity.set(3.0f, 4.0f);
         friction.set(12.0f, 0.0f);
-        acceleration.set(0.0f, -25.0f);
+        acceleration.set(0.0f, -10f);
         // View direction
         viewDirection = VIEW_DIRECTION.RIGHT;
         // Jump state
@@ -54,6 +52,9 @@ public class BuuyHead extends AbstractGameObject {
         // Power-ups
         hasFeatherPowerup = false;
         timeLeftFeatherPowerup = 0;
+
+        // Bounding box for collision detection
+        bounds.set(position.x, position.y, dimension.x, dimension.y);
     }
 
     public void setJumping(boolean jumpKeyPressed) {

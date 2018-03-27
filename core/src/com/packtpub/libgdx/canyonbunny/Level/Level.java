@@ -32,6 +32,7 @@ public class Level {
     public BuuyHead buuyhead;
     public Array<GlodCoin> goldcoins;
     public Array<Feather> feathers;
+    public Vector2 startPosition;
 
     public Level(String fileName) {
         init(fileName);
@@ -48,6 +49,7 @@ public class Level {
         rocks = new Array<Rock>();
         goldcoins = new Array<GlodCoin>();
         feathers = new Array<Feather>();
+        Rock rock = null;
         int lastPixel = -1;
         int currentPixel = -1;
         float heightIncreaseFactor = 0.25f;
@@ -65,16 +67,19 @@ public class Level {
                     if(currentPixel == lastPixel){
                         rocks.get(rocks.size-1).addLength(1);
                     }else{
-                        obj = new Rock();
-                        offsetHeight = -2.5f;
-                        obj.position.set(x, baseHeight * obj.dimension.y * heightIncreaseFactor + offsetHeight);
-                        rocks.add((Rock)obj);
+                        rock = new Rock();
+                        offsetHeight = -3.5f;
+                        //obj.position.set(x, baseHeight * obj.dimension.y * heightIncreaseFactor + offsetHeight);
+                        rock.setPosition(new Vector2(x,baseHeight * rock.dimension.y * heightIncreaseFactor + offsetHeight));
+                        rocks.add(rock);
                     }
                 }else if(currentPixel == BLOCK_TYPE.PLAYER.getColor()){
                     // 玩家初始的位置
-                    obj = new BuuyHead();
                     offsetHeight = -1.5f;
-                    obj.position.set(x+2,baseHeight * obj.dimension.y+ offsetHeight);
+                    float offsetX = 6;
+                    obj = new BuuyHead();
+                    obj.setPosition(new Vector2(x, baseHeight * obj.dimension.y+ offsetHeight));
+                    startPosition = new Vector2(x, baseHeight * obj.dimension.y+ offsetHeight);
                     buuyhead = (BuuyHead)obj;
                 }else if(currentPixel == BLOCK_TYPE.FEATHER.getColor()){
                     // 羽毛
@@ -98,9 +103,9 @@ public class Level {
         clouds = new Clouds(pixmap.getWidth(),5);
         clouds.setPosition(new Vector2(0f,2f));
         mountains = new Mountains(pixmap.getWidth());
-        mountains.setPosition(new Vector2(-1,-1));
+        mountains.setPosition(new Vector2(-1,-2));
         water = new Water(pixmap.getWidth());
-        water.setPosition(new Vector2(0,-3.75f));
+        water.setPosition(new Vector2(0,-4f));
         pixmap.dispose();
         Logs.d(TAG,"init map finish!");
     }

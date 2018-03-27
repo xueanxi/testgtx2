@@ -41,6 +41,7 @@ public abstract class AbstractGameObject {
         updateMotionY(deltaTime);
         position.x += velocity.x * deltaTime;
         position.y += velocity.y * deltaTime;
+        bounds.set(position.x,position.y,dimension.x,dimension.y);
     }
 
     /**
@@ -55,6 +56,11 @@ public abstract class AbstractGameObject {
 
     public void setPosition(Vector2 position) {
         this.position = position;
+        updateBounds();
+    }
+
+    protected void updateBounds(){
+        this.bounds.set(this.position.x,this.position.y,this.dimension.x,this.dimension.y);
     }
 
     public Vector2 getDimension() {
@@ -63,6 +69,7 @@ public abstract class AbstractGameObject {
 
     public void setDimension(Vector2 dimension) {
         this.dimension = dimension;
+        updateBounds();
     }
 
     public Vector2 getScale() {

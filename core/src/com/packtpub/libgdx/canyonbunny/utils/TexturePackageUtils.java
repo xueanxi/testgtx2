@@ -12,7 +12,7 @@ public class TexturePackageUtils {
         TexturePacker.Settings settings = new TexturePacker.Settings();
         settings.maxWidth = 1024;
         settings.maxHeight = 1024;
-        settings.debug = true;
+        settings.debug = false;
         settings.rotation = false;
         TexturePacker.process(settings, "source", "android/assets/image/", "game");
     }

@@ -22,7 +22,7 @@ public class Mountains extends AbstractGameObject {
     }
 
     private void init() {
-        dimension.set(10,2f);
+        dimension.set(10,3f);
         regMountainLeft = Assets.getInstance().findTextureByName(Constants.AtlasNames.MOUNTAIN_LEFT);
         regMountainRight = Assets.getInstance().findTextureByName(Constants.AtlasNames.MOUNTAIN_RIGHT);
         origin.x = -dimension.x * 2;
