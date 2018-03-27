@@ -3,7 +3,7 @@ package com.packtpub.libgdx.canyonbunny.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.packtpub.libgdx.canyonbunny.CanyonBunnyMain;
+import com.packtpub.libgdx.canyonbunny.CanyonBunnyMain2;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -46,6 +46,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new CanyonBunnyMain();
+                return new CanyonBunnyMain2();
         }
 }

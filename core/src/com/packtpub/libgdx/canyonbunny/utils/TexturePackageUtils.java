@@ -1,6 +1,5 @@
 package com.packtpub.libgdx.canyonbunny.utils;
 
-import com.packtpub.libgdx.canyonbunny.CanyonBunnyMain;
 import com.badlogic.gdx.tools.texturepacker.*;
 
 /**

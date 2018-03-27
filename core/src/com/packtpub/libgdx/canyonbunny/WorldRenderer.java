@@ -34,14 +34,21 @@ public class WorldRenderer implements Disposable {
         renderWorld(batch);
         renderGui(batch);
     }
+
+
     private void renderGui(SpriteBatch batch) {
         batch.setProjectionMatrix(cameraGUI.combined);
+        Logs.d(TAG,"bunny head position "+worldController.level.buuyhead.position);
+
         batch.begin();
         // draw collected gold coins icon + text
         // (anchored to top left edge)
         renderGuiScore(batch);
         // draw extra lives icon + text (anchored to top right edge)
         renderGuiExtraLive(batch);
+
+
+        renderGuiFeatherPowerup(batch);
         // draw FPS text (anchored to bottom right edge)
         renderGuiFpsCounter(batch);
 
@@ -115,13 +122,37 @@ public class WorldRenderer implements Disposable {
         }
     }
 
+    /**
+     * 兔子捡到羽毛的时间
+     * @param batch
+     */
+    private void renderGuiFeatherPowerup(SpriteBatch batch) {
+        float x = 10;
+        float y = 10;
+        float timeLeftFeatherPowerup = worldController.level.buuyhead.timeLeftFeatherPowerup;
+        if (timeLeftFeatherPowerup > 0) {
+            // Start icon fade in/out if the left power-up time
+            // is less than 4 seconds. The fade interval is set
+            // to 5 changes per second.
+            if (timeLeftFeatherPowerup < 4) {
+                if (((int) (timeLeftFeatherPowerup * 5) % 2) != 0) {
+                    batch.setColor(1, 1, 1, 0.5f);
+                }
+            }
+            batch.draw(Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_FEATHER), x, y, 0, 0, 60, 60,
+                    1,1, 0);
+            batch.setColor(1, 1, 1, 1);
+            Assets.getInstance().getBitmapFont(2).draw(batch, ""+ (int) timeLeftFeatherPowerup, x+60 , y+30 );
+        }
+    }
+
     private void renderGuiGameOverMessage(SpriteBatch batch) {
         if (worldController.isGameOver()) {
             float x = cameraGUI.viewportWidth / 2;
             float y = cameraGUI.viewportHeight / 2;
             BitmapFont fontGameOver = Assets.getInstance().getBitmapFont(3);
             fontGameOver.setColor(1, 0.75f, 0.25f, 1);
-            fontGameOver.draw(batch, "GAME OVER", x, y,100, Align.center,true);
+            fontGameOver.draw(batch, "GAME OVER", x, y,300, Align.center,true);
             fontGameOver.setColor(1, 1, 1, 1);
         }
     }

@@ -5,13 +5,12 @@ import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.packtpub.libgdx.canyonbunny.CanyonBunnyMain;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new CanyonBunnyMain(), config);
+        return new IOSApplication(new CanyonBunnyMain2(), config);
     }
 
     public static void main(String[] argv) {

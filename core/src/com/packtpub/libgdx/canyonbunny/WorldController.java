@@ -1,6 +1,7 @@
 package com.packtpub.libgdx.canyonbunny;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.packtpub.libgdx.canyonbunny.Level.Level;
+import com.packtpub.libgdx.canyonbunny.game.MenuScreen;
 import com.packtpub.libgdx.canyonbunny.modle.BuuyHead;
 import com.packtpub.libgdx.canyonbunny.modle.Feather;
 import com.packtpub.libgdx.canyonbunny.modle.GlodCoin;
@@ -34,12 +36,16 @@ public class WorldController extends InputAdapter {
     private Rectangle r1;
     private Rectangle r2;
 
+    public Game game;
+
     private float timeLeftGameOverDelay;// 用于统计游戏中玩家挂掉之后的时间，用于判断3秒后复活玩家
 
 
-    public WorldController(){
+    public WorldController(Game game){
+        this.game = game;
         init();
     }
+
     public void init(){
         Gdx.input.setInputProcessor(this);
         mAssets = Assets.getInstance();
@@ -49,6 +55,11 @@ public class WorldController extends InputAdapter {
         level = new Level(Constants.Level.LEVEL_01);
         cameraHelper = new CameraHelper();
         cameraHelper.setTarget(level.buuyhead);
+    }
+
+    public void backToMenu(){
+        // switch to menu screen
+        game.setScreen(new MenuScreen(game));
     }
 
     /**
@@ -104,7 +115,7 @@ public class WorldController extends InputAdapter {
     }
 
     private void onCollisionBunnyHeadWithRock(Rock rock) {
-        Logs.d(TAG,"onCollisionBunnyHeadWithRock");
+        //Logs.d(TAG,"onCollisionBunnyHeadWithRock");
         BuuyHead bunnyHead = level.buuyhead;
         float heightDifference = Math.abs(bunnyHead.position.y - (rock.position.y + rock.bounds.height));
         if (heightDifference > 0.25f) {

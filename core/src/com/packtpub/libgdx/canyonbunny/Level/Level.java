@@ -100,6 +100,11 @@ public class Level {
             }
         }
 
+
+        obj = new Feather();
+        obj.setPosition(new Vector2(2,1));
+        feathers.add((Feather) obj);
+
         clouds = new Clouds(pixmap.getWidth(),5);
         clouds.setPosition(new Vector2(0f,2f));
         mountains = new Mountains(pixmap.getWidth());
