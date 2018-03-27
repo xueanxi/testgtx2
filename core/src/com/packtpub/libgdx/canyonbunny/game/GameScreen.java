@@ -21,10 +21,6 @@ public class GameScreen extends  AbstractGameScreen {
 
     public GameScreen(Game game) {
         super(game);
-    }
-
-
-    public void GameScreen () {
         worldController = new WorldController(game);
         worldRenderer = new WorldRenderer(worldController);
         isPause = false;

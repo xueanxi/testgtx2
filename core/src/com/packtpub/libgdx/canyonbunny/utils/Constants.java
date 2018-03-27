@@ -5,6 +5,7 @@ package com.packtpub.libgdx.canyonbunny.utils;
  */
 
 public class Constants {
+    public static final String PREFERENCES = "com.packtpub.libgdx.canyonbunny.preferences";
     public static final float VIEWPORT_WIDTH = 5;
     public static final float VIEWPORT_HEIGHT = 5;
     public static final String TEXTURE_ATLAS_OBJECTS = "image/game.atlas";
@@ -20,10 +21,10 @@ public class Constants {
     public static final float TIME_DELAY_GAME_OVER = 3;// 挂掉之后等待的时间
 
     // Location of description file for skins
-    public static final String SKIN_LIBGDX_UI = "images/uiskin.json";
-    public static final String SKIN_CANYONBUNNY_UI = "images/canyonbunny-ui.json";
-    public static final String TEXTURE_ATLAS_UI = "images/canyonbunny-ui.pack";
-    public static final String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
+    public static final String SKIN_LIBGDX_UI = "image/uiskin.json";
+    public static final String SKIN_CANYONBUNNY_UI = "image/canyonbunny-ui.json";
+    public static final String TEXTURE_ATLAS_UI = "image/canyonbunny-ui.pack";
+    public static final String TEXTURE_ATLAS_LIBGDX_UI = "image/uiskin.atlas";
 
     /**
      * 纹理图集的小图名称常量
