@@ -4,12 +4,9 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -30,8 +27,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.packtpub.libgdx.canyonbunny.CameraHelper;
+import com.packtpub.libgdx.canyonbunny.eumn.CharacterSkin;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
 import com.packtpub.libgdx.canyonbunny.utils.GamePreferences;
@@ -44,24 +41,7 @@ import com.packtpub.libgdx.canyonbunny.utils.Logs;
 public class MenuScreen extends AbstractGameScreen {
     private static final String TAG = "=MenuScreen";
 
-    public enum CharacterSkin {
-        WHITE("White", 1.0f, 1.0f, 1.0f), GRAY("Gray", 0.7f, 0.7f, 0.7f), BROWN(
-                "Brown", 0.7f, 0.5f, 0.3f);
-        private String name;
-        private Color color = new Color();
 
-        private CharacterSkin(String name, float r, float g, float b) {
-            this.name = name;
-            color.set(r, g, b, 1.0f);
-        }
-        @Override
-        public String toString() {
-            return name;
-        }
-        public Color getColor() {
-            return color;
-        }
-    }
 
     private Stage stage;
     private Skin skinCanyonBunny;
@@ -87,7 +67,7 @@ public class MenuScreen extends AbstractGameScreen {
     private CheckBox chkShowFpsCounter;
     // debug
     private final float DEBUG_REBUILD_INTERVAL = 5.0f;
-    private boolean debugEnabled = true;
+    private boolean debugEnabled = false;
     private float debugRebuildStage;
     private SpriteBatch batch;
     StretchViewport sviewport;
@@ -120,7 +100,7 @@ public class MenuScreen extends AbstractGameScreen {
         Table layerObjects = buildObjectsLayer();
         Table layerLogos = buildLogosLayer();
         Table layerControls = buildControlsLayer();
-        //Table layerOptionsWindow = buildOptionsWindowLayer();
+        Table layerOptionsWindow = buildOptionsWindowLayer();
         // assemble stage for menu screen
         stage.clear();
         Stack stack = new Stack();
@@ -132,7 +112,7 @@ public class MenuScreen extends AbstractGameScreen {
         stack.add(layerControls);
 
         stage.addActor(stack);
-        //stage.addActor(layerOptionsWindow);
+        stage.addActor(layerOptionsWindow);
     }
 
     private Table buildBackgroundLayer() {
@@ -209,6 +189,10 @@ public class MenuScreen extends AbstractGameScreen {
     }
 
     private void onOptionsClicked() {
+        loadSettings();
+        btnMenuPlay.setVisible(false);
+        btnMenuOptions.setVisible(false);
+        winOptions.setVisible(true);
     }
 
     private Table buildOptionsWindowLayer() {
@@ -468,5 +452,4 @@ public class MenuScreen extends AbstractGameScreen {
         });
         return tbl;
     }
-
 }

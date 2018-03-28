@@ -1,10 +1,13 @@
 package com.packtpub.libgdx.canyonbunny.modle;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.packtpub.libgdx.canyonbunny.eumn.CharacterSkin;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
+import com.packtpub.libgdx.canyonbunny.utils.GamePreferences;
 
 /**
  * Created by user on 3/26/18.
@@ -15,6 +18,7 @@ public class BuuyHead extends AbstractGameObject {
     private final float JUMP_TIME_MAX = 0.3f;
     private final float JUMP_TIME_MIN = 0.1f;
     private final float JUMP_TIME_OFFSET_FLYING = JUMP_TIME_MAX - 0.018f;
+
 
     public enum VIEW_DIRECTION {
         LEFT, RIGHT
@@ -30,6 +34,7 @@ public class BuuyHead extends AbstractGameObject {
     public JUMP_STATE jumpState;
     public boolean hasFeatherPowerup;
     public float timeLeftFeatherPowerup;
+    private Color bunnyHeadColor;
 
     public BuuyHead() {
         init();
@@ -38,6 +43,7 @@ public class BuuyHead extends AbstractGameObject {
     public void init() {
         dimension.set(1, 1);
         regHead = Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
+        bunnyHeadColor = CharacterSkin.values()[GamePreferences.getInstance().charSkin].getColor();
         // Center image on game object
         origin.set(dimension.x / 2, dimension.y / 2);
         // Set physics values
@@ -142,8 +148,11 @@ public class BuuyHead extends AbstractGameObject {
     public void render(SpriteBatch batch) {
         TextureRegion reg = null;
         // Set special color when game object has a feather power-up
-        if (hasFeatherPowerup)
+        batch.setColor(bunnyHeadColor);
+        if (hasFeatherPowerup){
             batch.setColor(1.0f, 0.8f, 0.0f, 1.0f);
+        }
+
         // Draw image
         reg = regHead;
         batch.draw(reg.getTexture(), position.x, position.y, origin.x,
