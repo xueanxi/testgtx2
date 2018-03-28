@@ -19,7 +19,7 @@ public class CameraHelper {
     private float zoom;
     private AbstractGameObject target;
 
-    CameraHelper() {
+    public CameraHelper() {
         position = new Vector2();
         zoom = 1f;
     }
@@ -62,6 +62,21 @@ public class CameraHelper {
     public boolean hasTarget(AbstractGameObject target){
         return hasTarget() && this.target.equals(target);
     }
+
+    /**
+     * 根据输入来移动镜头
+     * @param moveX
+     * @param moveY
+     * @param rate   这是移动速的倍数
+     */
+    public void moveCamera(float moveX,float moveY,float rate){
+        float x = this.getPosition().x;
+        float y = this.getPosition().y;
+        x+=moveX*rate;
+        y+=moveY*rate;
+        this.setPosition(x,y);
+    }
+
 
     public void applyTo(OrthographicCamera camera){
         camera.position.x = position.x;

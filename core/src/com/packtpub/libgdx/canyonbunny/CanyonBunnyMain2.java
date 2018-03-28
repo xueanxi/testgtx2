@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.packtpub.libgdx.canyonbunny.game.AbstractGameScreen;
 import com.packtpub.libgdx.canyonbunny.game.GameScreen;
 import com.packtpub.libgdx.canyonbunny.game.MenuScreen;
+import com.packtpub.libgdx.canyonbunny.game.TestScreen;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 
 public class CanyonBunnyMain2 extends Game {

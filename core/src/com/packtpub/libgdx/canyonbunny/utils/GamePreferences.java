@@ -10,18 +10,25 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class GamePreferences {
     public static final String TAG = "=GamePreferences";
-    public static final GamePreferences instance = new GamePreferences();
     public boolean sound;
     public boolean music;
     public float volSound;
     public float volMusic;
     public int charSkin;
     public boolean showFpsCounter;
-    private Preferences prefs;
+    private static Preferences prefs;
+    private static GamePreferences mInstance;
 
     // singleton: prevent instantiation from other classes
     private GamePreferences() {
         prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+    }
+
+    public static GamePreferences getInstance(){
+        if(mInstance == null){
+            mInstance = new GamePreferences();
+        }
+        return mInstance;
     }
 
     public void load() {
