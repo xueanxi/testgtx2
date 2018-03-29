@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
+import com.packtpub.libgdx.canyonbunny.utils.Logs;
 
 /**
  * Created by anxi.xue on 2018/3/24.
@@ -48,6 +49,17 @@ public class Clouds extends AbstractGameObject {
         postion.y = 1.7f;
         postion.y += MathUtils.random(0,0.2f)* (MathUtils.randomBoolean()?1:-1);
         cloud.setPosition(postion);
+
+
+        // speed
+        Vector2 speed = new Vector2();
+        speed.x += 0.3f; // base speed
+        // random additional speed
+        speed.x += MathUtils.random(0.0f, 0.35f);
+        cloud.terminalVelocity.set(speed);
+        speed.x *= -1; // move left
+        cloud.velocity.set(speed);
+        cloud.friction.set(0,0);
         return cloud;
     }
 
@@ -61,7 +73,16 @@ public class Clouds extends AbstractGameObject {
     }
 
 
+    @Override
+    public void update(float deltaTime){
+        for(Cloud c:clouds){
+            c.update(deltaTime);
+        }
+    }
+
+
     public class Cloud extends AbstractGameObject{
+        private static final String TAG = "=Cloud";
         TextureRegion regCloud;
 
         public Cloud(TextureRegion reg){
@@ -78,6 +99,16 @@ public class Clouds extends AbstractGameObject {
                     regCloud.getRegionX(),regCloud.getRegionY(),
                     regCloud.getRegionWidth(),regCloud.getRegionHeight(),
                     false,false);
+        }
+
+        @Override
+        public void update(float deltaTime){
+            Logs.d(TAG,"cloud update()");
+            updateMotionX(deltaTime);
+            updateMotionY(deltaTime);
+            position.x += velocity.x * deltaTime;
+            position.y += velocity.y * deltaTime;
+            //bounds.set(position.x,position.y,dimension.x,dimension.y);
         }
     }
 }

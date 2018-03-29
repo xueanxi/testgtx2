@@ -12,4 +12,9 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(new CanyonBunnyMain2(), config);
 	}
+
+	@Override
+	protected void onPostResume() {
+		super.onPostResume();
+	}
 }

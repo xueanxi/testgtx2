@@ -52,7 +52,7 @@ public class Rock extends AbstractGameObject {
         batch.draw(reg.getTexture(),
                 position.x + relX, position.y,
                 origin.x+0.1f, origin.y,
-                edgeWidth, dimension.y,
+                edgeWidth, dimension.y*1.1f,
                 scale.x,scale.y,
                 rotation,
                 reg.getRegionX(), reg.getRegionY(),
@@ -64,7 +64,7 @@ public class Rock extends AbstractGameObject {
         for (int i = 0; i < length; i++) {
             batch.draw(
                     reg.getTexture(), position.x + relX, position.y,
-                    origin.x, origin.y, middleWidth, dimension.y, scale.x,
+                    origin.x, origin.y, middleWidth, dimension.y*1.1f, scale.x,
                     scale.y, rotation, reg.getRegionX(), reg.getRegionY(),
                     reg.getRegionWidth(), reg.getRegionHeight(), false, false);
             relX += 1;
@@ -74,7 +74,7 @@ public class Rock extends AbstractGameObject {
         batch.draw(reg.getTexture(),
                 position.x + relX, position.y ,
                 origin.x + 0.1f, origin.y,
-                edgeWidth,dimension.y,
+                edgeWidth,dimension.y*1.1f,
                 scale.x, scale.y,
                 rotation,
                 reg.getRegionX(),reg.getRegionY(),

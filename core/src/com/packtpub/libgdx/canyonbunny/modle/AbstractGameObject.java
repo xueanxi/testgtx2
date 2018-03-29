@@ -59,9 +59,6 @@ public abstract class AbstractGameObject {
         updateBounds();
     }
 
-    protected void updateBounds(){
-        this.bounds.set(this.position.x,this.position.y,this.dimension.x,this.dimension.y);
-    }
 
     public Vector2 getDimension() {
         return dimension;
@@ -70,6 +67,10 @@ public abstract class AbstractGameObject {
     public void setDimension(Vector2 dimension) {
         this.dimension = dimension;
         updateBounds();
+    }
+
+    protected void updateBounds(){
+        this.bounds.set(this.position.x,this.position.y,this.dimension.x,this.dimension.y);
     }
 
     public Vector2 getScale() {

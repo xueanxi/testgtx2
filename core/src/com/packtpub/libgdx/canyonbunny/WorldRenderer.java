@@ -38,7 +38,7 @@ public class WorldRenderer implements Disposable {
 
     private void renderGui(SpriteBatch batch) {
         batch.setProjectionMatrix(cameraGUI.combined);
-        Logs.d(TAG,"bunny head position "+worldController.level.buuyhead.position);
+        //Logs.d(TAG,"bunny head position "+worldController.level.buuyhead.position);
 
         batch.begin();
         // draw collected gold coins icon + text
