@@ -40,7 +40,7 @@ public class TestScreen extends ScreenAdapter {
     public void resize(int width, int height) {
         super.resize(width, height);
         Logs.d(TAG,"resize w:"+width+" h:"+height);
-        //testStage.setViewport(new StretchViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
+        //paticleStage.setViewport(new StretchViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
         viewport = new StretchViewport(5, 5);
         testStage.setViewport(viewport);
     }
