@@ -18,6 +18,7 @@ public class CameraHelper {
     private Vector2 position;
     private float zoom;
     private AbstractGameObject target;
+    private final float FOLLOW_SPEED = 4.0f;
 
     public CameraHelper() {
         position = new Vector2();
@@ -26,8 +27,10 @@ public class CameraHelper {
 
     public void update(float deltaTime) {
         if (target == null) return;
-        position.x = target.position.x + target.origin.x;
-        position.y = target.position.y + target.origin.y;
+        //position.x = target.position.x + target.origin.x;
+        //position.y = target.position.y + target.origin.y;
+        // 实现差值，让相机移动更加平滑
+        position.lerp(target.position, FOLLOW_SPEED * deltaTime);
     }
 
     public void setPosition(float x,float y){

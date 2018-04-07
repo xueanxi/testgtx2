@@ -9,6 +9,7 @@ public class Constants {
     public static final float VIEWPORT_WIDTH = 5;
     public static final float VIEWPORT_HEIGHT = 5;
     public static final String TEXTURE_ATLAS_OBJECTS = "image/game.atlas";
+    public static final String TEXTURE_ATLAS_BUNNY = "image/bunnyhead.atlas";
     public static final String FONT_FILE = "font/arial-15.fnt";
     // GUI Width
     public static final float VIEWPORT_GUI_WIDTH = 800.0f;
@@ -26,6 +27,13 @@ public class Constants {
     public static final String TEXTURE_ATLAS_UI = "image/canyonbunny-ui.pack";
     public static final String TEXTURE_ATLAS_LIBGDX_UI = "image/uiskin.atlas";
 
+    // Number of carrots to spawn
+    public static final int CARROTS_SPAWN_MAX = 100;
+    // Spawn radius for carrots
+    public static final float CARROTS_SPAWN_RADIUS = 3.5f;
+    // Delay after game finished
+    public static final float TIME_DELAY_GAME_FINISHED = 6;
+
     /**
      * 纹理图集的小图名称常量
      */
@@ -41,6 +49,27 @@ public class Constants {
         public static final String ROCK_EDGE = "rock_edge";
         public static final String ROCK_MIDDLE = "rock_middle";
         public static final String WATER_OVERLAY = "water_overlay";
+        public static final String DOC = "doc";
+        public static final String CARROT = "carrot";
+    }
+
+    /**
+     * 纹理图集的小图名称常量
+     */
+    public static interface AtlasBunny {
+        public static final String BUNNY_HEAD1 = "bunnyheads1";
+        public static final String BUNNY_HEAD2 = "bunnyheads2";
+        public static final String BUNNY_HEAD3 = "bunnyheads3";
+        public static final String BUNNY_HEAD4 = "bunnyheads4";
+        public static final String BUNNY_HEAD5 = "bunnyheads5";
+    }
+
+    /**
+     * 纹理图集的小图名称常量
+     */
+    public static interface Sounds {
+        public static final String PICKCOIN = "sound/pickcoin.wav";
+        public static final String BGM1 = "sound/music01.mp3";
     }
 
     public static interface Level{

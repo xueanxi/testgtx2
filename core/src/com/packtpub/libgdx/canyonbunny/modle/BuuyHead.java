@@ -1,9 +1,10 @@
 package com.packtpub.libgdx.canyonbunny.modle;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.packtpub.libgdx.canyonbunny.eumn.CharacterSkin;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
@@ -35,6 +36,7 @@ public class BuuyHead extends AbstractGameObject {
     public boolean hasFeatherPowerup;
     public float timeLeftFeatherPowerup;
     private Color bunnyHeadColor;
+    private ParticleEffect particleEffect;
 
     public BuuyHead() {
         init();
@@ -42,7 +44,7 @@ public class BuuyHead extends AbstractGameObject {
 
     public void init() {
         dimension.set(1, 1);
-        regHead = Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
+        regHead = Assets.instance.findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
         bunnyHeadColor = CharacterSkin.values()[GamePreferences.getInstance().charSkin].getColor();
         // Center image on game object
         origin.set(dimension.x / 2, dimension.y / 2);
@@ -59,6 +61,9 @@ public class BuuyHead extends AbstractGameObject {
         hasFeatherPowerup = false;
         timeLeftFeatherPowerup = 0;
 
+        particleEffect = new ParticleEffect();
+        particleEffect.load(Gdx.files.internal("particle/two/fire.p"),Gdx.files.internal("particle/two"));
+        particleEffect.scaleEffect(0.01f);
         // Bounding box for collision detection
         bounds.set(position.x, position.y, dimension.x, dimension.y);
     }
@@ -71,10 +76,18 @@ public class BuuyHead extends AbstractGameObject {
                     timeJumping = 0;
                     jumpState = JUMP_STATE.JUMP_RISING;
                 }
+                if(velocity.x != 0){
+                    particleEffect.setPosition(position.x+dimension.x/2,position.y);
+                    particleEffect.start();
+                }else{
+                    particleEffect.allowCompletion();
+                }
                 break;
             case JUMP_RISING: // Rising in the air
                 if (!jumpKeyPressed)
                     jumpState = JUMP_STATE.JUMP_FALLING;
+
+                particleEffect.allowCompletion();
                 break;
             case FALLING:// Falling down
             case JUMP_FALLING: // Falling down after jump
@@ -82,6 +95,7 @@ public class BuuyHead extends AbstractGameObject {
                     timeJumping = JUMP_TIME_OFFSET_FLYING;
                     jumpState = JUMP_STATE.JUMP_RISING;
                 }
+                particleEffect.allowCompletion();
                 break;
         }
     }
@@ -112,6 +126,8 @@ public class BuuyHead extends AbstractGameObject {
                 setFeatherPowerup(false);
             }
         }
+
+        particleEffect.update(deltaTime);
     }
 
     @Override
@@ -162,6 +178,8 @@ public class BuuyHead extends AbstractGameObject {
                 false);
         // Reset color to white
         batch.setColor(1, 1, 1, 1);
+
+        particleEffect.draw(batch);
     }
 }
 

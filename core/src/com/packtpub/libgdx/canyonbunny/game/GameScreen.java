@@ -3,6 +3,7 @@ package com.packtpub.libgdx.canyonbunny.game;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.packtpub.libgdx.canyonbunny.WorldController;
 import com.packtpub.libgdx.canyonbunny.WorldRenderer;
@@ -19,11 +20,16 @@ public class GameScreen extends  AbstractGameScreen {
     //
     boolean isPause = false;
 
-    public GameScreen(Game game) {
+    public GameScreen(DirectedGame game) {
         super(game);
         worldController = new WorldController(game);
         worldRenderer = new WorldRenderer(worldController);
         isPause = false;
+    }
+
+    @Override
+    public InputProcessor getInputProcessor() {
+        return worldController;
     }
 
     @Override
@@ -70,6 +76,7 @@ public class GameScreen extends  AbstractGameScreen {
     @Override
     public void hide() {
         worldRenderer.dispose();
+        worldController.dispose();
         Gdx.input.setCatchBackKey(false);
     }
 }

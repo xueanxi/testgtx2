@@ -20,7 +20,7 @@ public class Feather extends AbstractGameObject {
 
     private void init() {
         dimension.set(0.5f,0.5f);
-        regCoin = Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_FEATHER);
+        regCoin = Assets.instance.findTextureByName(Constants.AtlasNames.ITEM_FEATHER);
         bounds.set(0,0,dimension.x,dimension.y);
         isCollect = false;
     }

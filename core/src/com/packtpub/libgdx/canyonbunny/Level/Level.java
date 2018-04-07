@@ -2,15 +2,16 @@ package com.packtpub.libgdx.canyonbunny.Level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.packtpub.libgdx.canyonbunny.modle.AbstractGameObject;
 import com.packtpub.libgdx.canyonbunny.modle.BuuyHead;
+import com.packtpub.libgdx.canyonbunny.modle.Carrot;
 import com.packtpub.libgdx.canyonbunny.modle.Clouds;
 import com.packtpub.libgdx.canyonbunny.modle.Feather;
 import com.packtpub.libgdx.canyonbunny.modle.GlodCoin;
+import com.packtpub.libgdx.canyonbunny.modle.Goal;
 import com.packtpub.libgdx.canyonbunny.modle.Mountains;
 import com.packtpub.libgdx.canyonbunny.modle.Rock;
 import com.packtpub.libgdx.canyonbunny.modle.Water;
@@ -23,6 +24,9 @@ import com.packtpub.libgdx.canyonbunny.utils.Logs;
 
 public class Level {
     private static final String TAG = "=Level";
+
+    public Array<Carrot> carrots;
+    public Array<Goal> goals;
 
     public Mountains mountains;
     public Clouds clouds;
@@ -44,11 +48,14 @@ public class Level {
      */
     private void init(String fileName) {
         pixmap = new Pixmap(Gdx.files.internal(fileName));
+        carrots = new Array<Carrot>();
+
         Vector2 currentPosition = null;
         AbstractGameObject obj = null;
         rocks = new Array<Rock>();
         goldcoins = new Array<GlodCoin>();
         feathers = new Array<Feather>();
+        goals = new Array<Goal>();
         Rock rock = null;
         int lastPixel = -1;
         int currentPixel = -1;
@@ -93,6 +100,12 @@ public class Level {
                     obj = new GlodCoin();
                     obj.setPosition(new Vector2(x,baseHeight * obj.dimension.y+offsetHeight));
                     goldcoins.add((GlodCoin) obj);
+                }else if(currentPixel == BLOCK_TYPE.DOC.getColor()){
+                    // 终点门
+                    obj = new Goal();
+                    offsetHeight = -3.5f;
+                    obj.setPosition(new Vector2(x, baseHeight + offsetHeight));
+                    goals.add((Goal) obj);
                 }else{
                     Logs.e(TAG,"Error color when init Level for "+fileName);
                 }
@@ -127,6 +140,12 @@ public class Level {
         // Draw Feathers
         for (Feather feather : feathers)
             feather.render(batch);
+        for(Goal goal:goals){
+            goal.render(batch);
+        }
+        for(Carrot carrot:carrots){
+            carrot.render(batch);
+        }
         // Draw Player Character
         buuyhead.render(batch);
 
@@ -145,6 +164,9 @@ public class Level {
         for(Feather feather : feathers)
             feather.update(deltaTime);
         clouds.update(deltaTime);
+        for(Carrot carrot:carrots){
+            carrot.update(deltaTime);
+        }
     }
 
     // 枚举类型
@@ -153,7 +175,8 @@ public class Level {
         ROCK(0,255,0),//绿色
         PLAYER(255,255,255),//白色
         FEATHER(255,0,255),//紫色
-        GLOD(255,255,0); //黄色
+        GLOD(255,255,0), //黄色
+        DOC(255,0,0); //红色色
 
         private int color;
 

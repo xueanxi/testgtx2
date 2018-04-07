@@ -1,6 +1,6 @@
 package com.packtpub.libgdx.canyonbunny.game;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 
@@ -8,13 +8,15 @@ import com.packtpub.libgdx.canyonbunny.utils.Assets;
  * Created by user on 3/27/18.
  */
 
-public class AbstractGameScreen implements Screen{
+public abstract class AbstractGameScreen implements Screen{
 
-    public Game game;
+    public DirectedGame game;
 
-    public AbstractGameScreen(Game game){
+    public AbstractGameScreen(DirectedGame game){
         this.game = game;
     }
+
+    public abstract InputProcessor getInputProcessor();
 
     public void show() {
 
@@ -42,11 +44,11 @@ public class AbstractGameScreen implements Screen{
 
 
     public void hide() {
-        Assets.getInstance();
+
     }
 
 
     public void dispose() {
-        Assets.getInstance().dispose();
+        Assets.instance.dispose();
     }
 }

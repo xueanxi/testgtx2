@@ -20,7 +20,7 @@ public class GlodCoin extends AbstractGameObject {
 
     private void init() {
         dimension.set(0.5f,0.5f);
-        regCoin = Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_GOLD_COIN);
+        regCoin = Assets.instance.findTextureByName(Constants.AtlasNames.ITEM_GOLD_COIN);
         bounds.set(0,0,dimension.x,dimension.y);
         isCollect = false;
     }

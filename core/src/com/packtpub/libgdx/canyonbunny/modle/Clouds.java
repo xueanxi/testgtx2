@@ -29,9 +29,9 @@ public class Clouds extends AbstractGameObject {
         dimension.set(3,1.5f);
         regArrayCloud = new Array<TextureRegion>(3);
         clouds = new Array<Cloud>();
-        regArrayCloud.add(Assets.getInstance().findTextureByName(Constants.AtlasNames.CLOUD01));
-        regArrayCloud.add(Assets.getInstance().findTextureByName(Constants.AtlasNames.CLOUD02));
-        regArrayCloud.add(Assets.getInstance().findTextureByName(Constants.AtlasNames.CLOUD03));
+        regArrayCloud.add(Assets.instance.findTextureByName(Constants.AtlasNames.CLOUD01));
+        regArrayCloud.add(Assets.instance.findTextureByName(Constants.AtlasNames.CLOUD02));
+        regArrayCloud.add(Assets.instance.findTextureByName(Constants.AtlasNames.CLOUD03));
         int cloudNum = (int) (length/distFac);
         Cloud cloud = null;
         for(int i = 0;i<cloudNum;i++){
@@ -103,7 +103,6 @@ public class Clouds extends AbstractGameObject {
 
         @Override
         public void update(float deltaTime){
-            Logs.d(TAG,"cloud update()");
             updateMotionX(deltaTime);
             updateMotionY(deltaTime);
             position.x += velocity.x * deltaTime;

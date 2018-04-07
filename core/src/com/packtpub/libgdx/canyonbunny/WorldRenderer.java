@@ -3,14 +3,15 @@ package com.packtpub.libgdx.canyonbunny;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
-import com.packtpub.libgdx.canyonbunny.utils.Logs;
 
 /**
  * Created by user on 3/22/18.
@@ -19,10 +20,16 @@ import com.packtpub.libgdx.canyonbunny.utils.Logs;
 public class WorldRenderer implements Disposable {
     private static final String TAG = "=WorldRenderer";
 
+    private static final boolean DEBUG_DRAW_BOX2D_WORLD = false;
+    Box2DDebugRenderer box2DDebugRenderer;
+    private ShaderProgram shaderMonochrome;
+
     OrthographicCamera camera;
     private OrthographicCamera cameraGUI;
     SpriteBatch batch;
     WorldController worldController;
+
+
 
 
     public WorldRenderer(WorldController worldController){
@@ -62,6 +69,18 @@ public class WorldRenderer implements Disposable {
         batch.begin();
         worldController.level.render(batch);
         batch.end();
+
+        if(DEBUG_DRAW_BOX2D_WORLD){
+            box2DDebugRenderer.render(worldController.b2world,camera.combined);
+        }
+        /*shaderMonochrome = new ShaderProgram(
+                Gdx.files.internal(Constants.shaderMonochromeVertex),
+                Gdx.files.internal(Constants.shaderMonochromeFragment));
+        if (!shaderMonochrome.isCompiled()) {
+            String msg = "Could not compile shader program: "
+                    + shaderMonochrome.getLog();
+            throw new GdxRuntimeException(msg);
+        }*/
     }
 
 
@@ -86,11 +105,36 @@ public class WorldRenderer implements Disposable {
         cameraGUI.position.set(0, 0, 0);
         cameraGUI.setToOrtho(false); // flip y-axis
         cameraGUI.update();
+
+        box2DDebugRenderer = new Box2DDebugRenderer();
+    }
+    private void renderGuiExtraLive(SpriteBatch batch) {
+        float x = cameraGUI.viewportWidth - 50 - Constants.LIVES_START * 50;
+        float y = -15;
+        for (int i = 0; i < Constants.LIVES_START; i++) {
+            if (worldController.lives <= i)
+                batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
+            batch.draw(Assets.instance.findTextureByName(Constants.AtlasNames.BUNNY_HEAD), x + i * 50, y, 50, 50, 120,
+                    100, 0.35f, -0.35f, 0);
+            batch.setColor(1, 1, 1, 1);
+        }
+        if (worldController.lives >= 0
+                && worldController.livesVisual > worldController.lives) {
+            int i = worldController.lives;
+            float alphaColor = Math.max(0, worldController.livesVisual
+                    - worldController.lives - 0.5f);
+            float alphaScale = 0.35f * (2 + worldController.lives - worldController.livesVisual) * 2;
+            float alphaRotate = -45 * alphaColor;
+            batch.setColor(1.0f, 0.7f, 0.7f, alphaColor);
+            batch.draw(Assets.instance.findTextureByName(Constants.AtlasNames.BUNNY_HEAD), x + i * 50, y, 50, 50, 120,
+                    100, alphaScale, -alphaScale, alphaRotate);
+            batch.setColor(1, 1, 1, 1);
+        }
     }
 
     private void renderGuiScore(SpriteBatch batch) {
 
-        TextureRegion reg = Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_GOLD_COIN);
+        TextureRegion reg = Assets.instance.findTextureByName(Constants.AtlasNames.ITEM_GOLD_COIN);
         int width = reg.getRegionWidth();
         int height = reg.getRegionHeight();
         float x = 15;
@@ -100,27 +144,9 @@ public class WorldRenderer implements Disposable {
                 width/2, height/2,
                 width, height,
                 0.6f, 0.6f, 0);
-        Assets.getInstance().getBitmapFont(2).draw(batch,"" + worldController.score, x + width, y + height*0.5f);
+        Assets.instance.getBitmapFont(2).draw(batch,"" + worldController.score, x + width, y + height*0.5f);
     }
 
-    private void renderGuiExtraLive(SpriteBatch batch) {
-        float x = cameraGUI.viewportWidth  - Constants.LIVES_START * 50;
-        float y = cameraGUI.viewportHeight - 50;
-        TextureRegion reg = Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD);
-        float width = 40;
-        float height = 40 * reg.getRegionWidth()/reg.getRegionWidth();
-        for (int i = 0; i < Constants.LIVES_START; i++) {
-            if (worldController.lives <= i){
-                batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
-            }
-            batch.draw(reg,
-                    x + i * 50, y,//(x,y)
-                    width/2, height/2,//(orig.x,orig.y)
-                    width,height,//(width,height)
-                    1, 1, 0);
-            batch.setColor(1, 1, 1, 1);
-        }
-    }
 
     /**
      * 兔子捡到羽毛的时间
@@ -139,10 +165,10 @@ public class WorldRenderer implements Disposable {
                     batch.setColor(1, 1, 1, 0.5f);
                 }
             }
-            batch.draw(Assets.getInstance().findTextureByName(Constants.AtlasNames.ITEM_FEATHER), x, y, 0, 0, 60, 60,
+            batch.draw(Assets.instance.findTextureByName(Constants.AtlasNames.ITEM_FEATHER), x, y, 0, 0, 60, 60,
                     1,1, 0);
             batch.setColor(1, 1, 1, 1);
-            Assets.getInstance().getBitmapFont(2).draw(batch, ""+ (int) timeLeftFeatherPowerup, x+60 , y+30 );
+            Assets.instance.getBitmapFont(2).draw(batch, ""+ (int) timeLeftFeatherPowerup, x+60 , y+30 );
         }
     }
 
@@ -150,7 +176,7 @@ public class WorldRenderer implements Disposable {
         if (worldController.isGameOver()) {
             float x = cameraGUI.viewportWidth / 2;
             float y = cameraGUI.viewportHeight / 2;
-            BitmapFont fontGameOver = Assets.getInstance().getBitmapFont(3);
+            BitmapFont fontGameOver = Assets.instance.getBitmapFont(3);
             fontGameOver.setColor(1, 0.75f, 0.25f, 1);
             fontGameOver.draw(batch, "GAME OVER", x, y,300, Align.center,true);
             fontGameOver.setColor(1, 1, 1, 1);
@@ -161,7 +187,7 @@ public class WorldRenderer implements Disposable {
         float x = cameraGUI.viewportWidth - 55;
         float y =  15;
         int fps = Gdx.graphics.getFramesPerSecond();
-        BitmapFont fpsFont = Assets.getInstance().getBitmapFont(2);
+        BitmapFont fpsFont = Assets.instance.getBitmapFont(2);
         if (fps >= 45) {
             // 45 or more FPS show up in green
             fpsFont.setColor(0, 1, 0, 1);

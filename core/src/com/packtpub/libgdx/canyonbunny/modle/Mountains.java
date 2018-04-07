@@ -23,8 +23,8 @@ public class Mountains extends AbstractGameObject {
 
     private void init() {
         dimension.set(10,3f);
-        regMountainLeft = Assets.getInstance().findTextureByName(Constants.AtlasNames.MOUNTAIN_LEFT);
-        regMountainRight = Assets.getInstance().findTextureByName(Constants.AtlasNames.MOUNTAIN_RIGHT);
+        regMountainLeft = Assets.instance.findTextureByName(Constants.AtlasNames.MOUNTAIN_LEFT);
+        regMountainRight = Assets.instance.findTextureByName(Constants.AtlasNames.MOUNTAIN_RIGHT);
         origin.x = -dimension.x * 2;
         length += dimension.x * 2;
     }

@@ -21,7 +21,7 @@ public class Water extends AbstractGameObject {
 
     private void init() {
         dimension.set(lenght*10,3);
-        regWater = Assets.getInstance().findTextureByName(Constants.AtlasNames.WATER_OVERLAY);
+        regWater = Assets.instance.findTextureByName(Constants.AtlasNames.WATER_OVERLAY);
         origin.x = - dimension.x/2;
     }
 

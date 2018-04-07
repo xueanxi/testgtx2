@@ -13,6 +13,7 @@ public class TexturePackageUtils {
         settings.maxHeight = 1024;
         settings.debug = false;
         settings.rotation = false;
-        TexturePacker.process(settings, "source", "android/assets/image/", "game");
+        //TexturePacker.process(settings, "android/assets/source", "android/assets/image/", "game");
+        TexturePacker.process(settings, "android/assets/bunny", "android/assets/image/", "bunnyhead");
     }
 }

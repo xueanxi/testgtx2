@@ -1,0 +1,41 @@
+
+bunnyhead.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bunnyheads1
+  rotate: false
+  xy: 2, 2
+  size: 100, 92
+  orig: 100, 92
+  offset: 0, 0
+  index: -1
+bunnyheads2
+  rotate: false
+  xy: 104, 2
+  size: 100, 92
+  orig: 100, 92
+  offset: 0, 0
+  index: -1
+bunnyheads3
+  rotate: false
+  xy: 206, 3
+  size: 100, 91
+  orig: 100, 91
+  offset: 0, 0
+  index: -1
+bunnyheads4
+  rotate: false
+  xy: 308, 3
+  size: 100, 91
+  orig: 100, 91
+  offset: 0, 0
+  index: -1
+bunnyheads5
+  rotate: false
+  xy: 410, 3
+  size: 100, 91
+  orig: 100, 91
+  offset: 0, 0
+  index: -1

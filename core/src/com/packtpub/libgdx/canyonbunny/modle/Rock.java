@@ -1,12 +1,10 @@
 package com.packtpub.libgdx.canyonbunny.modle;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
-import com.packtpub.libgdx.canyonbunny.utils.Logs;
 
 /**
  * Created by user on 3/23/18.
@@ -27,8 +25,8 @@ public class Rock extends AbstractGameObject {
     private void init() {
         dimension.set(middleWidth,2f);
         rotation = 0;
-        regEdge = Assets.getInstance().findTextureByName(Constants.AtlasNames.ROCK_EDGE);
-        regMiddle = Assets.getInstance().findTextureByName(Constants.AtlasNames.ROCK_MIDDLE);
+        regEdge = Assets.instance.findTextureByName(Constants.AtlasNames.ROCK_EDGE);
+        regMiddle = Assets.instance.findTextureByName(Constants.AtlasNames.ROCK_MIDDLE);
         length = 1;
     }
 

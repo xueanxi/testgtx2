@@ -1,14 +1,15 @@
 package com.packtpub.libgdx.canyonbunny.game;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -29,10 +30,20 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.packtpub.libgdx.canyonbunny.CameraHelper;
 import com.packtpub.libgdx.canyonbunny.eumn.CharacterSkin;
+import com.packtpub.libgdx.canyonbunny.interfaces.ScreenTransition;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
 import com.packtpub.libgdx.canyonbunny.utils.Constants;
 import com.packtpub.libgdx.canyonbunny.utils.GamePreferences;
 import com.packtpub.libgdx.canyonbunny.utils.Logs;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Created by user on 3/27/18.
@@ -66,8 +77,8 @@ public class MenuScreen extends AbstractGameScreen {
     private Image imgCharSkin;
     private CheckBox chkShowFpsCounter;
     // debug
-    private final float DEBUG_REBUILD_INTERVAL = 5.0f;
-    private boolean debugEnabled = false;
+    private final float DEBUG_REBUILD_INTERVAL = 8.0f;
+    private boolean debugEnabled = true;
     private float debugRebuildStage;
     private SpriteBatch batch;
     StretchViewport sviewport;
@@ -75,7 +86,7 @@ public class MenuScreen extends AbstractGameScreen {
     FitViewport tviewport;
     CameraHelper cameraHelper;
 
-    public MenuScreen(Game game) {
+    public MenuScreen(DirectedGame game) {
         super(game);
         Logs.d(TAG,"MenuScreen() 构造函数");
         batch = new SpriteBatch();
@@ -85,6 +96,11 @@ public class MenuScreen extends AbstractGameScreen {
         stage = new Stage(sviewport);
         cameraHelper = new CameraHelper();
         cameraHelper.setPosition(Constants.VIEWPORT_GUI_WIDTH/2,Constants.VIEWPORT_GUI_HEIGHT/2);
+    }
+
+    @Override
+    public InputProcessor getInputProcessor() {
+        return stage;
     }
 
     private void rebuildStage() {
@@ -130,11 +146,27 @@ public class MenuScreen extends AbstractGameScreen {
         // + Coins
         imgCoins = new Image(skinCanyonBunny, "coins");
         layer.addActor(imgCoins);
-        imgCoins.setPosition(135, 80);
+        //imgCoins.setPosition(135, 80);
+        imgCoins.setOrigin(imgCoins.getWidth() / 2,
+                imgCoins.getHeight() / 2);
+        imgCoins.addAction(sequence(
+                moveTo(135, -20),
+                scaleTo(0, 0),
+                //fadeOut(0),
+                delay(2.5f),
+                parallel(moveBy(0, 100, 0.5f, Interpolation.swingOut),
+                        scaleTo(1.0f, 1.0f, 0.25f, Interpolation.linear),
+                        alpha(1.0f, 0.5f))));
         // + Bunny
         imgBunny = new Image(skinCanyonBunny, "bunny");
         layer.addActor(imgBunny);
-        imgBunny.setPosition(355, 40);
+        //imgBunny.setPosition(355, 40);
+        imgBunny.addAction(sequence(
+                moveTo(655, 510),
+                delay(4.0f),
+                moveBy(-70, -100, 0.5f, Interpolation.fade),
+                moveBy(-100, -50, 0.5f, Interpolation.fade),
+                moveBy(-150, -300, 1.0f, Interpolation.elasticIn)));
         return layer;
     }
 
@@ -185,7 +217,11 @@ public class MenuScreen extends AbstractGameScreen {
     }
 
     private void onPlayClicked() {
-        game.setScreen(new GameScreen(game));
+        //ScreenTransition transition = ScreenTransitionFade.init(0.75f);
+        ScreenTransition transition = ScreenTransitionSlide.init(0.75f,
+                ScreenTransitionSlide.DOWN, false, Interpolation.bounceOut);
+        game.setScreen(new GameScreen(game),null);
+
     }
 
     private void onOptionsClicked() {
@@ -392,7 +428,7 @@ public class MenuScreen extends AbstractGameScreen {
         });
         tbl.add(selCharSkin).width(120).padRight(20);
         // + Skin preview image
-        imgCharSkin = new Image(Assets.getInstance().findTextureByName(Constants.AtlasNames.BUNNY_HEAD));
+        imgCharSkin = new Image(Assets.instance.findTextureByName(Constants.AtlasNames.BUNNY_HEAD));
         tbl.add(imgCharSkin).width(50).height(50);
         return tbl;
     }
