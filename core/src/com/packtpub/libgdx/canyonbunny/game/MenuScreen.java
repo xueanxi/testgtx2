@@ -78,7 +78,7 @@ public class MenuScreen extends AbstractGameScreen {
     private CheckBox chkShowFpsCounter;
     // debug
     private final float DEBUG_REBUILD_INTERVAL = 8.0f;
-    private boolean debugEnabled = true;
+    private boolean debugEnabled = false;
     private float debugRebuildStage;
     private SpriteBatch batch;
     StretchViewport sviewport;
@@ -109,7 +109,9 @@ public class MenuScreen extends AbstractGameScreen {
                 Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI),
                 new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
 
-       skinLibgdx = new Skin(Gdx.files.internal(Constants.SKIN_LIBGDX_UI),new TextureAtlas(Constants.TEXTURE_ATLAS_LIBGDX_UI));
+       //skinLibgdx = Assets.defaultSkin;
+       //skinLibgdx = Assets.skinGlassy;
+       skinLibgdx = Assets.skinShade;
 
         // build all layers
         Table layerBackground = buildBackgroundLayer();

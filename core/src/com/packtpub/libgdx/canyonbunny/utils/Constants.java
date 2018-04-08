@@ -21,11 +21,8 @@ public class Constants {
     public static final int ITEM_FEATHER_POWERUP_DURATION = 3;
     public static final float TIME_DELAY_GAME_OVER = 3;// 挂掉之后等待的时间
 
-    // Location of description file for skins
-    public static final String SKIN_LIBGDX_UI = "image/uiskin.json";
     public static final String SKIN_CANYONBUNNY_UI = "image/canyonbunny-ui.json";
     public static final String TEXTURE_ATLAS_UI = "image/canyonbunny-ui.pack";
-    public static final String TEXTURE_ATLAS_LIBGDX_UI = "image/uiskin.atlas";
 
     // Number of carrots to spawn
     public static final int CARROTS_SPAWN_MAX = 100;

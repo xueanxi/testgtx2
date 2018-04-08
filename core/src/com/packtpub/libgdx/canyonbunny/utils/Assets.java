@@ -34,6 +34,8 @@ public class Assets implements Disposable {
     private static BitmapFont midleFont;
     private static BitmapFont smallFont;
     public static Skin defaultSkin;
+    public static Skin skinGlassy;
+    public static Skin skinShade;
     public static BunnyHead bunnyHead;
 
 
@@ -57,7 +59,9 @@ public class Assets implements Disposable {
         initTextureAtlas();
         initFont();
 
-        defaultSkin = new Skin(Gdx.files.internal(Constants.SKIN_LIBGDX_UI),new TextureAtlas(Constants.TEXTURE_ATLAS_LIBGDX_UI));
+        defaultSkin = new Skin(Gdx.files.internal(SKIN_LIBGDX_UI),new TextureAtlas(TEXTURE_ATLAS_LIBGDX_UI));
+        skinGlassy = new Skin(Gdx.files.internal(SKIN_JSON_GLASSY),new TextureAtlas(SKIN_ATLAS_GLASSY));
+        skinShade = new Skin(Gdx.files.internal(SKIN_JSON_SHADE),new TextureAtlas(SKIN_ATLAS_SHADE));
     }
 
     private static void initTextureAtlas() {
@@ -146,4 +150,15 @@ public class Assets implements Disposable {
             return animation1;
         }
     }
+
+
+    // Location of description file for skins
+    public static final String SKIN_LIBGDX_UI = "skin/default/uiskin.json";
+    public static final String TEXTURE_ATLAS_LIBGDX_UI = "skin/default/uiskin.atlas";
+
+    public static final String SKIN_JSON_GLASSY = "skin/glassy/glassy-ui.json";
+    public static final String SKIN_ATLAS_GLASSY = "skin/glassy/glassy-ui.atlas";
+
+    public static final String SKIN_JSON_SHADE = "skin/shade/uiskin.json";
+    public static final String SKIN_ATLAS_SHADE = "skin/shade/uiskin.atlas";
 }
