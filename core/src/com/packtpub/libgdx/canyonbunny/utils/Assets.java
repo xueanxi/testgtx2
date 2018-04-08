@@ -130,16 +130,16 @@ public class Assets implements Disposable {
     }
 
     public static class BunnyHead{
-        Animation animation1;
+        Animation<TextureRegion> animation1;
         BunnyHead(AssetManager am){
             TextureAtlas bunnys = am.get(Constants.TEXTURE_ATLAS_BUNNY,TextureAtlas.class);
-            Array<TextureRegion> regions = new Array<TextureRegion>(5);
+            /*Array<TextureRegion> regions = new Array<TextureRegion>(5);
             regions.add(bunnys.findRegion(Constants.AtlasBunny.BUNNY_HEAD1));
             regions.add(bunnys.findRegion(Constants.AtlasBunny.BUNNY_HEAD2));
             regions.add(bunnys.findRegion(Constants.AtlasBunny.BUNNY_HEAD3));
             regions.add(bunnys.findRegion(Constants.AtlasBunny.BUNNY_HEAD4));
-            regions.add(bunnys.findRegion(Constants.AtlasBunny.BUNNY_HEAD5));
-            animation1 = new Animation(1f/15f,regions, Animation.PlayMode.LOOP);
+            regions.add(bunnys.findRegion(Constants.AtlasBunny.BUNNY_HEAD5));*/
+            animation1 = new Animation<TextureRegion>(0.05f,bunnys.findRegions("bunnyheads"), Animation.PlayMode.LOOP);
         }
 
         public Animation getAnimation1() {

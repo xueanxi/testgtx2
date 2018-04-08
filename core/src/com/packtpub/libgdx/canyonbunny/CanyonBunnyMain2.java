@@ -7,6 +7,7 @@ import com.packtpub.libgdx.canyonbunny.game.DirectedGame;
 import com.packtpub.libgdx.canyonbunny.game.MenuScreen;
 import com.packtpub.libgdx.canyonbunny.game.ScreenTransitionSlice;
 import com.packtpub.libgdx.canyonbunny.game.TestActionScreen;
+import com.packtpub.libgdx.canyonbunny.game.TestAnimationScreen;
 import com.packtpub.libgdx.canyonbunny.game.TestViewPortScreen;
 import com.packtpub.libgdx.canyonbunny.interfaces.ScreenTransition;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
@@ -37,6 +38,7 @@ public class CanyonBunnyMain2 extends DirectedGame {
 		ScreenTransition transition = ScreenTransitionSlice.init(2,
 				ScreenTransitionSlice.UP_DOWN, 10, Interpolation.pow5Out);
 		setScreen(new TestActionScreen(this), null);
+		//setScreen(new TestAnimationScreen(this), null);
 		//setScreen(new TestViewPortScreen(this), null);
 	}
 }

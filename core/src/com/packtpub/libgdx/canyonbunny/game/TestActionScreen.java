@@ -144,7 +144,7 @@ public class TestActionScreen extends AbstractGameScreen {
 
     class MyBunnyHead extends Actor{
         Animation animation;
-        int statusTime = 0;
+        float statusTime = 0;
         MyBunnyHead(Animation animation){
             this.animation = animation;
         }
@@ -167,7 +167,7 @@ public class TestActionScreen extends AbstractGameScreen {
                     reg.getRegionX(),reg.getRegionY(),
                     reg.getRegionWidth(),reg.getRegionHeight(),
                     false,);*/
-            batch.draw(reg,this.getX(),this.getY());
+            batch.draw(reg,200,200);
         }
     }
 }
