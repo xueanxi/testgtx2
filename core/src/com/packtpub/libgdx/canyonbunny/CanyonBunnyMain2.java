@@ -35,7 +35,7 @@ public class CanyonBunnyMain2 extends DirectedGame {
 		//setScreen(new MenuScreen(this),null);
 		//setScreen(new TestParticleScreen());
 
-		AudioManager.instance.play(Assets.soundAsset.bgm1,true);
+		//AudioManager.instance.play(Assets.soundAsset.bgm1,true);
 
 		ScreenTransition transition = ScreenTransitionSlice.init(2,
 				ScreenTransitionSlice.UP_DOWN, 10, Interpolation.pow5Out);
