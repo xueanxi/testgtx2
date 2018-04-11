@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "27.0.3"
-    compileSdkVersion 27
+    buildToolsVersion "26.0.3"
+    compileSdkVersion 26
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "com.packtpub.libgdx.canyonbunny"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -131,4 +131,6 @@ idea {
     }
 }
 dependencies {
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile files('libs/sqlite-jdbc-3.21.0.jar')
 }

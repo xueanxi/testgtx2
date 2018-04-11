@@ -73,5 +73,4 @@ public class Constants {
         public static final String LEVEL_01 = "level/level-01.png";
     }
 
-
 }

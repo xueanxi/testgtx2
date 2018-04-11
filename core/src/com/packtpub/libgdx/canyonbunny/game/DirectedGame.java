@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.packtpub.libgdx.canyonbunny.interfaces.INotify;
 import com.packtpub.libgdx.canyonbunny.interfaces.ScreenTransition;
 
 /**
@@ -20,6 +21,24 @@ public class DirectedGame implements ApplicationListener {
     private SpriteBatch batch;
     private float t;
     private ScreenTransition screenTransition;
+
+    public INotify notify;
+
+    public DirectedGame(){
+        this.notify = null;
+    }
+
+    public DirectedGame(INotify notify){
+        this.notify = notify;
+    }
+
+    public INotify getNotify(){
+        if(this.notify !=null){
+            return notify;
+        }else{
+            return null;
+        }
+    }
 
     public void setScreen(AbstractGameScreen screen){
         this.setScreen(screen,null);

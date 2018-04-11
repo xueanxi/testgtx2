@@ -4,15 +4,13 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
 import com.packtpub.libgdx.canyonbunny.game.DirectedGame;
-import com.packtpub.libgdx.canyonbunny.game.MenuScreen;
+import com.packtpub.libgdx.canyonbunny.game.InterfaceTestScreen;
 import com.packtpub.libgdx.canyonbunny.game.ScreenTransitionSlice;
-import com.packtpub.libgdx.canyonbunny.game.TestActionScreen;
-import com.packtpub.libgdx.canyonbunny.game.TestAnimationScreen;
-import com.packtpub.libgdx.canyonbunny.game.TestUIScreen;
-import com.packtpub.libgdx.canyonbunny.game.TestViewPortScreen;
+import com.packtpub.libgdx.canyonbunny.game.TestDataBaseScreen;
+import com.packtpub.libgdx.canyonbunny.game.TestSoundRecordScreen;
+import com.packtpub.libgdx.canyonbunny.interfaces.INotify;
 import com.packtpub.libgdx.canyonbunny.interfaces.ScreenTransition;
 import com.packtpub.libgdx.canyonbunny.utils.Assets;
-import com.packtpub.libgdx.canyonbunny.utils.AudioManager;
 
 /**
  *  资料：
@@ -24,6 +22,11 @@ import com.packtpub.libgdx.canyonbunny.utils.AudioManager;
  */
 public class CanyonBunnyMain2 extends DirectedGame {
 	//
+
+
+	public CanyonBunnyMain2(INotify iNotify){
+		super(iNotify);
+	}
 
 
 	@Override
@@ -39,8 +42,11 @@ public class CanyonBunnyMain2 extends DirectedGame {
 
 		ScreenTransition transition = ScreenTransitionSlice.init(2,
 				ScreenTransitionSlice.UP_DOWN, 10, Interpolation.pow5Out);
-		setScreen(new TestUIScreen(this), null);
+		//setScreen(new InterfaceTestScreen(this), null);
+		setScreen(new TestDataBaseScreen(this), null);
 		//setScreen(new TestAnimationScreen(this), null);
 		//setScreen(new TestViewPortScreen(this), null);
+
+		//INotify.display();
 	}
 }

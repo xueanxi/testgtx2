@@ -1,1 +1,2 @@
+include ':utilslibs'
 include 'desktop', 'android', 'ios', 'html', 'core'

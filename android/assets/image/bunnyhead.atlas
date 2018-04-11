@@ -10,32 +10,32 @@ bunnyheads
   size: 100, 92
   orig: 100, 92
   offset: 0, 0
-  index: 1
+  index: 0
 bunnyheads
   rotate: false
   xy: 104, 2
   size: 100, 92
   orig: 100, 92
   offset: 0, 0
-  index: 2
+  index: 1
 bunnyheads
   rotate: false
   xy: 206, 3
   size: 100, 91
   orig: 100, 91
   offset: 0, 0
-  index: 3
+  index: 2
 bunnyheads
   rotate: false
   xy: 308, 3
   size: 100, 91
   orig: 100, 91
   offset: 0, 0
-  index: 4
+  index: 3
 bunnyheads
   rotate: false
   xy: 410, 3
   size: 100, 91
   orig: 100, 91
   offset: 0, 0
-  index: 5
+  index: 4
